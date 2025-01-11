@@ -22,7 +22,7 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboardclient', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
 });
 
 // Page Versets (accessible uniquement aux utilisateurs connectés)
@@ -60,5 +60,7 @@ Route::resource('prayers', PrayerController::class)->middleware('auth');
 Route::resource('testimonies', TestimonyController::class)->middleware('auth');
 
 Route::resource('products', ProductController::class);
+
+
 
 require __DIR__.'/auth.php';

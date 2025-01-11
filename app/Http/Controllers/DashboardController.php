@@ -22,7 +22,7 @@ class DashboardController extends Controller
         $verseText = $verse['text']; // Le texte du verset
         $verseReference = $verse['reference']; // La référence du verset
 
-        return view('dashboard', [
+        return view('dashboardclient', [
             'verseText' => $verseText,
             'verseReference' => $verseReference,
         ]);

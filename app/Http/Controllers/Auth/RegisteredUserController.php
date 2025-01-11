@@ -49,6 +49,6 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
         // Redirection vers le tableau de bord après l'inscription
-        return redirect('/dashboard');
+        return redirect('/dashboardclient');
     }
 }
