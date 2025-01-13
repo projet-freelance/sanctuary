@@ -206,32 +206,24 @@
 </div>
 
 <script>
+// Variable pour vérifier si le système vocal est prêt
 let voiceReady = false;
 
 // Fonction pour initialiser ResponsiveVoice
-async function initializeVoice() {
+function initializeVoice() {
     return new Promise((resolve, reject) => {
         if (typeof responsiveVoice === 'undefined') {
-            reject('ResponsiveVoice not loaded');
+            reject('ResponsiveVoice n\'est pas chargé');
             return;
         }
 
-        // Attendre que responsiveVoice soit complètement chargé
-        const checkVoice = setInterval(() => {
-            if (responsiveVoice.isInitialized()) {
-                clearInterval(checkVoice);
-                voiceReady = true;
-                resolve();
-            }
-        }, 100);
-
-        // Timeout après 10 secondes
-        setTimeout(() => {
-            if (!voiceReady) {
-                clearInterval(checkVoice);
-                reject('Timeout initializing ResponsiveVoice');
-            }
-        }, 10000);
+        // Vérifiez la disponibilité de la fonction speak comme indicateur d'initialisation
+        if (typeof responsiveVoice.speak === 'function') {
+            voiceReady = true;
+            resolve();
+        } else {
+            reject('ResponsiveVoice n\'est pas disponible');
+        }
     });
 }
 
@@ -261,37 +253,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Fonction pour vérifier la disponibilité de ResponsiveVoice
 function isVoiceReady() {
-    return voiceReady && responsiveVoice && responsiveVoice.isInitialized();
-}
-
-// Fonction pour attendre que la voix soit prête
-async function waitForVoice(timeout = 5000) {
-    return new Promise((resolve, reject) => {
-        if (isVoiceReady()) {
-            resolve();
-            return;
-        }
-
-        const startTime = Date.now();
-        const checkInterval = setInterval(() => {
-            if (isVoiceReady()) {
-                clearInterval(checkInterval);
-                resolve();
-            } else if (Date.now() - startTime > timeout) {
-                clearInterval(checkInterval);
-                reject('Timeout waiting for voice system');
-            }
-        }, 100);
-    });
+    return voiceReady && typeof responsiveVoice !== 'undefined' && typeof responsiveVoice.speak === 'function';
 }
 
 // Fonction pour lire un verset
 async function readVerse(text) {
     try {
-        await waitForVoice();
-        
+        if (!isVoiceReady()) {
+            throw new Error('Le système vocal n\'est pas prêt.');
+        }
+
         stopReading();
-        
+
         const voice = document.getElementById('voice-language').value;
         const speed = parseFloat(document.getElementById('voice-speed').value);
         const volume = parseFloat(document.getElementById('voice-volume').value);
@@ -317,11 +290,13 @@ function stopReading() {
 // Fonction pour lire le chapitre entier
 async function readChapter() {
     try {
-        await waitForVoice();
-        
+        if (!isVoiceReady()) {
+            throw new Error('Le système vocal n\'est pas prêt.');
+        }
+
         const verses = Array.from(document.querySelectorAll('.verse-text'))
             .map(verse => verse.textContent.trim());
-        
+
         const voice = document.getElementById('voice-language').value;
         const speed = parseFloat(document.getElementById('voice-speed').value);
         const volume = parseFloat(document.getElementById('voice-volume').value);
