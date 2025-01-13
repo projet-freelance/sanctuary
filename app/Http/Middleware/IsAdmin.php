@@ -3,16 +3,23 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class IsAdmin
 {
+    /**
+     * Gère une requête entrante.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
+     */
     public function handle($request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->role === 'admin') {
+        if (Gate::allows('admin', [$request->user(), null, []])) {
             return $next($request);
         }
 
-        return redirect('/login')->with('error', 'Vous devez être administrateur pour accéder à cette section.');
+        return redirect('/')->with('error', 'Accès non autorisé.');
     }
 }

@@ -12,23 +12,21 @@ return [
 
 	'routes' => [
 		// Docs: https://aimeos.org/docs/latest/laravel/extend/#custom-routes
-		// Multi-sites: https://aimeos.org/docs/latest/laravel/customize/#multiple-shops,
-		'admin' => ['prefix' => 'admin', 'middleware' => ['web', 'auth']],
-
-	
-    'jqadm' => ['prefix' => 'admin/{site}/jqadm', 'middleware' => ['web', 'auth']],
-    'graphql' => ['prefix' => 'admin/{site}/graphql', 'middleware' => ['web', 'auth']],
-    'jsonadm' => ['prefix' => 'admin/{site}/jsonadm', 'middleware' => ['web', 'auth']],
-    'jsonapi' => ['prefix' => 'jsonapi', 'middleware' => ['web', 'api']],
-		 'account' => ['prefix' => 'profile', 'middleware' => ['web', 'auth']],
-		 'default' => ['prefix' => 'shop', 'middleware' => ['web']],
-		 'basket' => ['prefix' => 'shop', 'middleware' => ['web']],
-		 'checkout' => ['prefix' => 'shop', 'middleware' => ['web']],
-		 'confirm' => ['prefix' => 'shop', 'middleware' => ['web']],
-		 'supplier' => ['prefix' => 's', 'middleware' => ['web']],
-		 'page' => ['prefix' => 'p', 'middleware' => ['web']],
-		 'home' => ['middleware' => ['web']],
-		 'update' => [],
+		// Multi-sites: https://aimeos.org/docs/latest/laravel/customize/#multiple-shops
+	 'admin' => ['prefix' => 'admin', 'middleware' => ['web']],
+		// 'jqadm' => ['prefix' => 'admin/{site}/jqadm', 'middleware' => ['web', 'auth']],
+		// 'graphql' => ['prefix' => 'admin/{site}/graphql', 'middleware' => ['web', 'auth']],
+		// 'jsonadm' => ['prefix' => 'admin/{site}/jsonadm', 'middleware' => ['web', 'auth']],
+		// 'jsonapi' => ['prefix' => 'jsonapi', 'middleware' => ['web', 'api']],
+		// 'account' => ['prefix' => 'profile', 'middleware' => ['web', 'auth']],
+		// 'default' => ['prefix' => 'shop', 'middleware' => ['web']],
+		// 'basket' => ['prefix' => 'shop', 'middleware' => ['web']],
+		// 'checkout' => ['prefix' => 'shop', 'middleware' => ['web']],
+		// 'confirm' => ['prefix' => 'shop', 'middleware' => ['web']],
+		// 'supplier' => ['prefix' => 's', 'middleware' => ['web']],
+		// 'page' => ['prefix' => 'p', 'middleware' => ['web']],
+		// 'home' => ['middleware' => ['web']],
+		// 'update' => [],
 	],
 
 	'page' => [

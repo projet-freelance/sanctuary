@@ -16,7 +16,7 @@ class User extends Authenticatable
         'email', 
         'password', 
         'avatar',
-        'role',
+        'role',  // Ici, nous conservons le champ 'role'
         'language_preference',
         'last_login_at',
         'spiritual_level',
@@ -27,6 +27,14 @@ class User extends Authenticatable
         'password', 
         'remember_token'
     ];
+
+    // Méthode pour récupérer les rôles de l'utilisateur
+    public function getRoles()
+    {
+        // Si vous utilisez Aimeos pour les groupes, récupérez-les ici
+        $context = app('aimeos.context')->get(false);
+        return $context->getGroups();
+    }
 
     // Relations
     public function testimonies() 
@@ -54,15 +62,31 @@ class User extends Authenticatable
         return $this->belongsToMany(Saint::class, 'user_saint_favourites'); 
     }
 
-    // Méthodes utilitaires
+    // Vérifier si l'utilisateur est un administrateur
     public function isAdmin()
     {
         return $this->role === 'admin';
     }
 
-    public function incrementSpirtualLevel($points)
+    // Vérifier si l'utilisateur est un éditeur
+    public function isEditor()
+    {
+        return $this->role === 'editor';
+    }
+
+    // Méthodes utilitaires
+    public function incrementSpiritualLevel($points)
     {
         $this->spiritual_level += $points;
         $this->save();
+    }
+
+    // Assigner un rôle à l'utilisateur (admin ou editor)
+    public function assignRole($role)
+    {
+        if (in_array($role, ['admin', 'editor'])) {
+            $this->role = $role;
+            $this->save();
+        }
     }
 }
