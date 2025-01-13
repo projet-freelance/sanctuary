@@ -16,7 +16,8 @@ class BibleService
             'base_uri' => 'https://bible-api.com/',
             'headers' => [
                 'Accept' => 'application/json',
-            ]
+            ],
+            'verify' => false, 
         ]);
 
         // Mappings des noms de livres pour l'API
