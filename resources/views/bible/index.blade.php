@@ -15,9 +15,7 @@
                     <form action="{{ route('bible.show') }}" method="GET" id="bibleForm">
                         <!-- Sélection du livre -->
                         <div class="mb-4">
-                            <label for="book" class="block text-sm font-medium text-gray-700 mb-1">
-                                Livre
-                            </label>
+                            <label for="book" class="block text-sm font-medium text-gray-700 mb-1">Livre</label>
                             <select 
                                 name="book" 
                                 id="book"
@@ -35,9 +33,7 @@
 
                         <!-- Sélection du chapitre -->
                         <div class="mb-4">
-                            <label for="chapter" class="block text-sm font-medium text-gray-700 mb-1">
-                                Chapitre
-                            </label>
+                            <label for="chapter" class="block text-sm font-medium text-gray-700 mb-1">Chapitre</label>
                             <select 
                                 name="chapter" 
                                 id="chapter"
@@ -59,9 +55,7 @@
                             
                             <!-- Sélection de la langue -->
                             <div class="mb-3">
-                                <label for="voice-language" class="block text-sm font-medium text-gray-700 mb-1">
-                                    Langue
-                                </label>
+                                <label for="voice-language" class="block text-sm font-medium text-gray-700 mb-1">Langue</label>
                                 <select id="voice-language" class="w-full p-2 border border-gray-300 rounded">
                                     <option value="French Female">Français (Femme)</option>
                                     <option value="French Male">Français (Homme)</option>
@@ -74,9 +68,7 @@
 
                             <!-- Contrôle de la vitesse -->
                             <div class="mb-3">
-                                <label for="voice-speed" class="block text-sm font-medium text-gray-700 mb-1">
-                                    Vitesse
-                                </label>
+                                <label for="voice-speed" class="block text-sm font-medium text-gray-700 mb-1">Vitesse</label>
                                 <input 
                                     type="range" 
                                     id="voice-speed" 
@@ -93,9 +85,7 @@
 
                             <!-- Contrôle du volume -->
                             <div class="mb-3">
-                                <label for="voice-volume" class="block text-sm font-medium text-gray-700 mb-1">
-                                    Volume
-                                </label>
+                                <label for="voice-volume" class="block text-sm font-medium text-gray-700 mb-1">Volume</label>
                                 <input 
                                     type="range" 
                                     id="voice-volume" 
