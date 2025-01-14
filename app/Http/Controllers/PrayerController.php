@@ -1,12 +1,33 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Prayer;
 use Illuminate\Http\Request;
+use App\Models\PrayerIntention;
+use Twilio\Rest\Client;
+use Twilio\TwiML\MessagingResponse;
+use App\Notifications\PrayerIntentionReceived;
+use Notification;
 
 class PrayerController extends Controller
 {
+    protected $twilio;
+
+    public function __construct()
+    {
+        // Configuration alternative avec désactivation SSL pour dev uniquement
+        $sid = config('services.twilio.sid');
+        $token = config('services.twilio.token');
+        
+        $this->twilio = new Client($sid, $token);
+        
+        // Désactive la vérification SSL - UNIQUEMENT POUR LE DÉVELOPPEMENT
+        $this->twilio->setHttpClient(new \Twilio\Http\CurlClient([
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => 0
+        ]));
+    }
+
     // Affiche la liste des prières
     public function index()
     {
@@ -29,21 +50,35 @@ class PrayerController extends Controller
     // Enregistre une nouvelle prière
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'intention' => 'required|string|max:255',
-            'audio_path' => 'nullable|file|mimes:mp3,wav',
-            'status' => 'required|string|in:en cours,exaucée,en attente',
-            'category' => 'required|string|max:255',
-            'privacy_level' => 'required|string|in:public,privé,communauté',
-            'prayer_type' => 'required|string|in:intercession,gratitude,demande',
+        $request->validate([
+            'message' => 'nullable|string',
+            'audio' => 'nullable|file|mimes:mp3,wav,ogg'
         ]);
 
-        $validated['user_id'] = auth()->id(); // Associe à l'utilisateur connecté
-        if ($request->hasFile('audio_path')) {
-            $validated['audio_path'] = $request->file('audio_path')->store('prayers');
+        // Crée une nouvelle prière
+        $prayer = Prayer::create([
+            'user_id' => auth()->id(),
+            'message' => $request->message,
+        ]);
+
+        if ($request->hasFile('audio')) {
+            // Ajoute l'audio si fourni
+            $prayer->addMedia($request->file('audio'))->toMediaCollection('audio');
         }
 
-        Prayer::create($validated);
+        try {
+            // Notifier les administrateurs de la nouvelle intention de prière
+            $message = $this->twilio->messages->create(
+                'admin_phone_number', // Remplacez par le vrai numéro
+                [
+                    'from' => config('services.twilio.phone_number'),
+                    'body' => "Nouvelle intention de prière : " . $prayer->message
+                ]
+            );
+        } catch (\Exception $e) {
+            // Log l'erreur mais continue l'exécution
+            \Log::error('Erreur Twilio: ' . $e->getMessage());
+        }
 
         return redirect()->route('prayers.index')->with('success', 'Prière ajoutée avec succès.');
     }
@@ -53,5 +88,23 @@ class PrayerController extends Controller
     {
         $prayer->delete();
         return redirect()->route('prayers.index')->with('success', 'Prière supprimée.');
+    }
+
+    // Méthode pour recevoir une intention de prière par SMS
+    public function receiveSms(Request $request)
+    {
+        $message = $request->input('Body');
+        $from = $request->input('From');
+
+        // Sauvegarder l'intention de prière dans la base de données
+        PrayerIntention::create([
+            'user_id' => auth()->id(),
+            'message' => $message
+        ]);
+
+        // Envoyer une réponse à l'utilisateur par SMS
+        $response = new MessagingResponse();
+        $response->message("Votre intention de prière a été reçue. Que Dieu vous bénisse.");
+        return response()->xml($response);
     }
 }

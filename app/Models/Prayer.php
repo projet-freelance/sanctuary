@@ -7,19 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Prayer extends Model
 {
-    protected $fillable = [
-        'user_id', 
-        'intention', 
-        'audio_path', 
-        'status',  // en cours, exaucée, en attente
-        'category',
-        'privacy_level',  // public, privé, communauté
-        'prayer_type'  // intercession, gratitude, demande
-    ];
+    
+    protected $fillable = ['user_id', 'message', 'audio_path'];
 
-    public function user() 
-    { 
-        return $this->belongsTo(User::class); 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     // Méthode pour comptabiliser les prières

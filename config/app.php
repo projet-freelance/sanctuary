@@ -15,6 +15,9 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+
+    'Twilio' => 'Aloha\Twilio\Support\Laravel\Facade',
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

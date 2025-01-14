@@ -7,6 +7,8 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Fonts -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
@@ -57,7 +59,7 @@
                                 <x-nav-link :href="route('testimonies.index')" :active="request()->routeIs('testimonies.index')" class="text-white hover:text-blue-300">
                                     {{ __('Témoignages') }}
                                 </x-nav-link>
-                                <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.index')" class="text-white hover:text-blue-300">
+                                <x-nav-link :href="route('aimeos_home')" :active="request()->routeIs('aimeos_home')" class="text-white hover:text-blue-300">
                                     {{ __('Produits') }}
                                 </x-nav-link>
                             @endauth
@@ -128,7 +130,7 @@
                         <x-nav-link :href="route('testimonies.index')" :active="request()->routeIs('testimonies.index')" class="text-white hover:text-blue-300">
                             {{ __('Témoignages') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.index')" class="text-white hover:text-blue-300">
+                        <x-nav-link :href="route('aimeos_home')" :active="request()->routeIs('aimeos_home')" class="text-white hover:text-blue-300">
                             {{ __('Produits') }}
                         </x-nav-link>
                     @endauth

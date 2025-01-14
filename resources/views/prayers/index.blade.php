@@ -21,6 +21,13 @@
         <hr class="border-t-2 border-gray-200">
         @endforeach
     </div>
+    
+<div class="">
+    <a href="{{ route('prayers.create')}}" class="text-bleu-600"> Creer une Prière</a>
+
+</div>
+
+   
 
    
 </div>

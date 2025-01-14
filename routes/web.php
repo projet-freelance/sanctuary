@@ -4,9 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BibleController;
 use App\Http\Controllers\PrayerController;
 use App\Http\Controllers\TestimonyController;
-use App\Http\Controllers\ProductController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
+use APP\Http\Controllers\PrayerIntentionController;
+
 use Illuminate\Support\Facades\Gate;
 use Aimeos\Shop\Base\Support;
 
@@ -25,6 +26,8 @@ use Aimeos\Shop\Base\Support;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/produit', '\Aimeos\Shop\Controller\CatalogController@homeAction')->name('aimeos_home');
 
 // Route Dashboard client (accessible uniquement pour les utilisateurs connectés)
 Route::middleware(['auth'])->group(function () {
@@ -67,8 +70,7 @@ Route::get('/bible/show', [BibleController::class, 'showChapter'])->name('bible.
 Route::resource('prayers', PrayerController::class)->middleware('auth');
 Route::resource('testimonies', TestimonyController::class)->middleware('auth');
 
-// Routes pour les produits
-Route::resource('products', ProductController::class);
+
 
 // Routes pour le profil utilisateur
 Route::middleware('auth')->group(function () {
@@ -76,6 +78,18 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile/me', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile/me', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::resource('prayers', PrayerController::class);
+Route::post('/prayers', [PrayerController::class, 'store'])->name('prayer.store');
+
+Route::get('/prayerintention', [PrayerIntentionController::class, 'create'])->name('prayer_intentions.create');
+Route::post('/prayerintention', [PrayerController::class, 'store'])->name('prayer.store');
+Route::post('/twilio/receive', [PrayerIntentionController::class, 'receiveSms']);
+
+
+
+Route::post('/prayer/sms', [PrayerController::class, 'receiveSms'])->name('prayers.receiveSms');
+Route::post('/prayer/audio', [PrayerController::class, 'receiveAudio'])->name('prayers.receiveAudio');
 
 // Intégration du fichier auth pour les routes d'authentification
 require __DIR__.'/auth.php';

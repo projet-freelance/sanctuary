@@ -13,6 +13,12 @@ return [
     | a conventional file to locate the various service credentials.
     |
     */
+    'twilio' => [
+    'sid' => env('TWILIO_ACCOUNT_SID'),
+    'token' => env('TWILIO_AUTH_TOKEN'),
+    'from' => env('TWILIO_PHONE_NUMBER'),
+    ],
+
 
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
@@ -35,4 +41,5 @@ return [
         ],
     ],
 
+ 
 ];
