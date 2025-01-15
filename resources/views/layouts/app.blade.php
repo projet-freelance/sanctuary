@@ -62,6 +62,9 @@
                                 <x-nav-link :href="route('aimeos_home')" :active="request()->routeIs('aimeos_home')" class="text-white hover:text-blue-300">
                                     {{ __('Produits') }}
                                 </x-nav-link>
+                                <x-nav-link :href="route('biblevideos.index')" :active="request()->routeIs('biblevideos.index')" class="text-white hover:text-blue-300">
+                                    {{ __('video Histoire') }}
+                                </x-nav-link>
                             @endauth
                         </div>
                     </div>

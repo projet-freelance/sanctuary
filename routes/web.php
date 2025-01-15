@@ -7,6 +7,7 @@ use App\Http\Controllers\TestimonyController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use APP\Http\Controllers\PrayerIntentionController;
+use App\Http\Controllers\BibleVideoController;
 
 use Illuminate\Support\Facades\Gate;
 use Aimeos\Shop\Base\Support;
@@ -26,6 +27,11 @@ use Aimeos\Shop\Base\Support;
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+Route::get('/bible_videos', [BibleVideoController::class, 'index'])->name('biblevideos.index');
+Route::get('/bible_videos/{id}', [BibleVideoController::class, 'show'])->name('biblevideos.show');
+
 
 Route::get('/produit', '\Aimeos\Shop\Controller\CatalogController@homeAction')->name('aimeos_home');
 
