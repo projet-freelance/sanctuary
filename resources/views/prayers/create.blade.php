@@ -7,7 +7,7 @@
         min-height: 100vh;
         padding: 4rem 0;
     }
-    
+
     .prayer-card {
         background: #ffffff;
         border-radius: 15px;
@@ -15,12 +15,12 @@
         box-shadow: 0 8px 30px rgba(0,0,0,0.05);
         transition: all 0.3s ease;
     }
-    
+
     .prayer-card:hover {
         transform: translateY(-5px);
         box-shadow: 0 12px 40px rgba(0,0,0,0.08);
     }
-    
+
     .card-header {
         background: linear-gradient(135deg, #1e3799 0%, #0c2461 100%);
         border-radius: 15px 15px 0 0 !important;
@@ -29,31 +29,31 @@
         font-size: 1.5rem;
         letter-spacing: 0.5px;
     }
-    
+
     .form-label {
         color: #2c3e50;
         font-weight: 500;
         margin-bottom: 0.7rem;
         font-size: 1.1rem;
     }
-    
+
     .form-control {
         border: 1px solid #e0e6ed;
         border-radius: 8px;
         padding: 0.8rem;
         transition: all 0.3s ease;
     }
-    
+
     .form-control:focus {
         border-color: #1e3799;
         box-shadow: 0 0 0 0.2rem rgba(30, 55, 153, 0.15);
     }
-    
+
     textarea.form-control {
         min-height: 120px;
         resize: vertical;
     }
-    
+
     .submit-btn {
         background: linear-gradient(135deg, #1e3799 0%, #0c2461 100%);
         border: none;
@@ -64,17 +64,17 @@
         text-transform: uppercase;
         transition: all 0.3s ease;
     }
-    
+
     .submit-btn:hover {
         transform: translateY(-2px);
         box-shadow: 0 5px 15px rgba(30, 55, 153, 0.3);
     }
-    
+
     .file-input-wrapper {
         position: relative;
         margin-top: 1.5rem;
     }
-    
+
     .custom-file-label {
         background: #f8f9fa;
         border: 1px dashed #cbd5e0;
@@ -84,6 +84,7 @@
         cursor: pointer;
     }
 </style>
+
 <div class="prayer-container">
     <div class="container">
         <div class="row justify-content-center">
@@ -92,9 +93,34 @@
                     <div class="card-header text-white">
                         <i class="fas fa-pray mr-2"></i> Soumettre une intention de prière
                     </div>
+
+                    <!-- Affichage des erreurs -->
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
                     <div class="card-body p-4">
                         <form action="{{ route('prayer.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
+                            <!-- Title -->
+                            <div class="mb-4">
+                                <label for="title" class="form-label">Titre de votre prière</label>
+                                <input 
+                                    type="text" 
+                                    name="title" 
+                                    class="form-control" 
+                                    placeholder="Donnez un titre à votre prière" 
+                                    value="{{ old('title') }}"
+                                    required 
+                                >
+                            </div>
+
                             <!-- Message -->
                             <div class="mb-4">
                                 <label for="message" class="form-label">Votre intention de prière</label>
@@ -103,8 +129,7 @@
                                     class="form-control" 
                                     rows="4" 
                                     placeholder="Partagez votre intention de prière ici avec sincérité..." 
-                                    required
-                                ></textarea>
+                                    required>{{ old('message') }}</textarea>
                             </div>
 
                             <!-- Audio -->
@@ -143,6 +168,14 @@
     document.getElementById('audio').addEventListener('change', function(event) {
         const fileName = event.target.files[0]?.name || "Aucun fichier sélectionné";
         document.getElementById('file-label').textContent = fileName;
+    });
+
+    document.querySelector('form').addEventListener('submit', function(event) {
+        const title = document.querySelector('input[name="title"]').value.trim();
+        if (!title) {
+            event.preventDefault();
+            alert('Le titre de la prière est obligatoire.');
+        }
     });
 </script>
 @endsection

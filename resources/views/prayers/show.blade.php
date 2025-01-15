@@ -1,21 +1,41 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Détail de la Prière</h1>
+<div class="min-h-screen flex flex-col bg-white">
+    <div class="container mx-auto p-6 flex-grow">
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h1 class="text-3xl font-bold text-gray-800 mb-6">{{ $prayer->title }}</h1>
+            
+            @if ($prayer->message)
+            <div class="mb-6">
+                <h2 class="text-2xl font-semibold text-gray-700 mb-2">Message</h2>
+                <p class="text-lg text-gray-600">{{ $prayer->message }}</p>
+            </div>
+            @endif
 
-    <h2>{{ $prayer->intention }}</h2>
-    <p>Type : {{ $prayer->prayer_type }}</p>
-    <p>Statut : {{ $prayer->status }}</p>
-    <p>Catégorie : {{ $prayer->category }}</p>
-    <p>Niveau de confidentialité : {{ $prayer->privacy_level }}</p>
-    <p>Créée par : {{ $prayer->user->name }}</p>
+            @if ($prayer->getFirstMediaUrl('audio'))
+            <div class="mb-6">
+                <h2 class="text-2xl font-semibold text-gray-700 mb-2">Audio</h2>
+                <audio controls>
+                    <source src="{{ $prayer->getFirstMediaUrl('audio') }}" type="audio/mpeg">
+                    Votre navigateur ne supporte pas la lecture audio.
+                </audio>
+            </div>
+            <div>
+                
+                <p>Créée par : {{ $prayer->user->name }}</p>
+            </div>
+            @endif
 
-    @if ($prayer->audio_path)
-        <audio controls>
-            <source src="{{ Storage::url($prayer->audio_path) }}" type="audio/mpeg">
-            Votre navigateur ne supporte pas la lecture audio.
-        </audio>
-    @endif
-
-    <a href="{{ route('prayers.index') }}">Retour à la liste</a>
+            <div class="mt-6">
+                <a href="{{ route('prayers.index') }}" class="text-blue-500 hover:text-blue-700 font-semibold">
+                    Retour à la liste des prières
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
+
+
+

@@ -7,10 +7,7 @@
 
         @foreach ($prayers as $prayer)
         <div class="bg-white p-6 rounded-lg shadow-md mb-6">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-2">{{ $prayer->intention }}</h2>
-            <p class="text-lg text-gray-600"><strong>Type :</strong> {{ $prayer->prayer_type }}</p>
-            <p class="text-lg text-gray-600"><strong>Statut :</strong> {{ $prayer->status }}</p>
-            <p class="text-lg text-gray-600"><strong>Catégorie :</strong> {{ $prayer->category }}</p>
+            <h2 class="text-2xl font-semibold text-gray-800 mb-2">{{ $prayer->title }}</h2>
 
             <div class="mt-4">
                 <a href="{{ route('prayers.show', $prayer) }}" class="text-blue-500 hover:text-blue-700 font-semibold">
@@ -22,14 +19,10 @@
         @endforeach
     </div>
     
-<div class="">
-    <a href="{{ route('prayers.create')}}" class="text-bleu-600"> Creer une Prière</a>
-
+    <div class="mt-6 text-center">
+        <a href="{{ route('prayers.create')}}" class="text-blue-600 hover:underline font-semibold">
+            Créer une Prière
+        </a>
+    </div>
 </div>
-
-   
-
-   
-</div>
-
 @endsection
