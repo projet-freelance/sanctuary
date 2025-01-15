@@ -22,7 +22,6 @@
                 </audio>
             </div>
             <div>
-                
                 <p>Créée par : {{ $prayer->user->name }}</p>
             </div>
             @endif
@@ -36,6 +35,3 @@
     </div>
 </div>
 @endsection
-
-
-
