@@ -65,6 +65,14 @@
                                 <x-nav-link :href="route('biblevideos.index')" :active="request()->routeIs('biblevideos.index')" class="text-white hover:text-blue-300">
                                     {{ __('video Histoire') }}
                                 </x-nav-link>
+                                <x-nav-link :href="route('quote.random')" :active="request()->routeIs('quote.random')" class="text-white hover:text-blue-300">
+                                   {{ __('Médite une citation') }}
+                                </x-nav-link>
+                                <x-nav-link :href="route('teachings.index')" :active="request()->routeIs('teachings.*')" class="text-white hover:text-blue-300">
+                                    {{ __('Enseignements') }}
+                                </x-nav-link>
+
+
                             @endauth
                         </div>
                     </div>

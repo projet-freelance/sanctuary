@@ -8,6 +8,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use APP\Http\Controllers\PrayerIntentionController;
 use App\Http\Controllers\BibleVideoController;
+use App\Http\Controllers\QuoteController;
+use App\Http\Controllers\TeachingController;
 
 use Illuminate\Support\Facades\Gate;
 use Aimeos\Shop\Base\Support;
@@ -96,6 +98,10 @@ Route::post('/twilio/receive', [PrayerIntentionController::class, 'receiveSms'])
 
 Route::post('/prayer/sms', [PrayerController::class, 'receiveSms'])->name('prayers.receiveSms');
 Route::post('/prayer/audio', [PrayerController::class, 'receiveAudio'])->name('prayers.receiveAudio');
+
+Route::get('/meditate', [QuoteController::class, 'randomQuote'])->name('quote.random');
+
+Route::resource('teachings', TeachingController::class);
 
 // Intégration du fichier auth pour les routes d'authentification
 require __DIR__.'/auth.php';
