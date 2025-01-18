@@ -48,14 +48,53 @@
 
                                 @auth
                                     <a href="{{ url('/') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">{{ __('Accueil') }}</a>
-                                    <a href="{{ route('bible.index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">{{ __('Bible') }}</a>
-                                    <a href="{{ route('prayers.index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">{{ __('Prières') }}</a>
+
+                                    <!-- Menu "Spiritualité" -->
+                                    <div class="relative" x-data="{ open: false }" @mouseleave="open = false">
+                                <button @mouseenter="open = true" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-white hover:text-gray-300 transition duration-150 ease-in-out">
+                                    Spiritualité
+                                    <svg class="ml-2 h-4 w-4" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                    </svg>
+                                </button>
+                                <div x-show="open" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform scale-y-0" x-transition:enter-end="opacity-100 transform scale-y-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 transform scale-y-100" x-transition:leave-end="opacity-0 transform scale-y-0" class="absolute left-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5" role="menu">
+                                    <a href="{{ route('bible.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Bible</a>
+                                    <a href="{{ route('prayers.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Prières</a>
+                                    <a href="{{ route('quote.random') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Citations</a>
+                                </div>
+                            </div>
+
+                                    <!-- Menu "Enseignement" -->
+                                    <div class="relative" x-data="{ open: false }" @mouseleave="open = false">
+                                <button @mouseenter="open = true" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-white hover:text-gray-300 transition duration-150 ease-in-out">
+                                    Enseignement
+                                    <svg class="ml-2 h-4 w-4" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                    </svg>
+                                </button>
+                                <div x-show="open" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform scale-y-0" x-transition:enter-end="opacity-100 transform scale-y-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 transform scale-y-100" x-transition:leave-end="opacity-0 transform scale-y-0" class="absolute left-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5" role="menu">
+                                    <a href="{{ route('teachings.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Enseignements</a>
+                                    <a href="{{ route('biblevideos.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Vidéos</a>
+                                </div>
+                            </div>
+
+
+                               <!-- Menu "partenair" -->
+                               <div class="relative" x-data="{ open: false }" @mouseleave="open = false">
+                                <button @mouseenter="open = true" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-white hover:text-gray-300 transition duration-150 ease-in-out">
+                                    partenair
+                                    <svg class="ml-2 h-4 w-4" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                    </svg>
+                                </button>
+                                <div x-show="open" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform scale-y-0" x-transition:enter-end="opacity-100 transform scale-y-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 transform scale-y-100" x-transition:leave-end="opacity-0 transform scale-y-0" class="absolute left-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5" role="menu">
+                                <a href="{{ route('radios.index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">{{ __('Radios') }}</a>
+                                </div>
+                            </div>
+
                                     <a href="{{ route('testimonies.index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">{{ __('Témoignages') }}</a>
                                     <a href="{{ route('aimeos_home') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">{{ __('Produits') }}</a>
-                                    <a href="{{ route('biblevideos.index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">{{ __('Vidéos') }}</a>
-                                    <a href="{{ route('quote.random') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">{{ __('Citations') }}</a>
-                                    <a href="{{ route('teachings.index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">{{ __('Enseignements') }}</a>
-                                    <a href="{{ route('radios.index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">{{ __('Radios') }}</a>
+                                   
                                 @endauth
                             </div>
                         </div>
@@ -64,26 +103,20 @@
                     <!-- Menu utilisateur -->
                     @auth
                     <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                        <!-- Profile dropdown -->
                         <div class="relative ml-3" x-data="{ open: false }">
                             <div>
                                 <button @click="open = ! open" type="button" class="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                                    <span class="absolute -inset-1.5"></span>
                                     <span class="sr-only">Menu utilisateur</span>
                                     <div class="h-8 w-8 rounded-full bg-gray-700 flex items-center justify-center text-white">
                                         {{ substr(Auth::user()->name, 0, 1) }}
                                     </div>
                                 </button>
                             </div>
-
-                            <!-- Dropdown menu -->
                             <div x-show="open" @click.away="open = false" class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                                 <div class="px-4 py-2 text-sm text-gray-700">{{ Auth::user()->name }}</div>
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
-                                    <button type="submit" class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100">
-                                        {{ __('Se Déconnecter') }}
-                                    </button>
+                                    <button type="submit" class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100">{{ __('Se Déconnecter') }}</button>
                                 </form>
                             </div>
                         </div>
@@ -102,9 +135,55 @@
 
                     @auth
                         <a href="{{ url('/') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">{{ __('Accueil') }}</a>
-                        <a href="{{ route('bible.index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">{{ __('Bible') }}</a>
-                        <a href="{{ route('prayers.index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">{{ __('Prières') }}</a>
-                        <!-- Ajoutez les autres liens du menu mobile ici -->
+                        
+                        <!-- Mobile menu pour Spiritualité -->
+                        <div x-data="{ open: false }">
+                            <button @click="open = !open" class="w-full flex justify-between items-center px-3 py-2 rounded-md text-base font-medium text-white hover:text-gray-300 hover:bg-gray-700">
+                                <span>Spiritualité</span>
+                                <svg class="h-5 w-5 transform transition-transform duration-200" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                </svg>
+                            </button>
+                            <div x-show="open" class="pl-4">
+                                <a href="{{ route('bible.index') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">Bible</a>
+                                <a href="{{ route('prayers.index') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">Prières</a>
+                                <a href="{{ route('quote.random') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">Citations</a>
+                            </div>
+                        </div>
+                       
+
+                        <!-- Mobile menu pour Enseignement -->
+                        <div x-data="{ open: false }">
+                            <button @click="open = !open" class="w-full flex justify-between items-center px-3 py-2 rounded-md text-base font-medium text-white hover:text-gray-300 hover:bg-gray-700">
+                                <span>Enseignement</span>
+                                <svg class="h-5 w-5 transform transition-transform duration-200" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                </svg>
+                            </button>
+                            <div x-show="open" class="pl-4">
+                                <a href="{{ route('teachings.index') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">Bible</a>
+                                <a href="{{ route('biblevideos.index') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">Prières</a>
+                                
+                            </div>
+                        </div>
+
+                        <div x-data="{ open: false }">
+                            <button @click="open = !open" class="w-full flex justify-between items-center px-3 py-2 rounded-md text-base font-medium text-white hover:text-gray-300 hover:bg-gray-700">
+                                <span>partenair</span>
+                                <svg class="h-5 w-5 transform transition-transform duration-200" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                </svg>
+                            </button>
+                            <div x-show="open" class="pl-4">
+                                <a href="{{ route('radios.index') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">Radios</a>
+                                
+                            </div>
+                        </div>
+                       
+                    
+                        <a href="{{ route('testimonies.index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">{{ __('Témoignages') }}</a>
+                        <a href="{{ route('aimeos_home') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">{{ __('Produits') }}</a>
+                   
                     @endauth
                 </div>
             </div>
@@ -130,6 +209,6 @@
         </footer>
     </div>
 
-    <script src="{{ mix('js/app.js') }}" defer></script>
+    <script src="{{ mix('js/app.js') }}"></script>
 </body>
 </html>
