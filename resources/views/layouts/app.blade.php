@@ -11,8 +11,13 @@
     <script src="https://code.responsivevoice.org/responsivevoice.js?key=auXJwGAn"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+
+    @livewireStyles
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+@livewireScripts
 </head>
 <body class="font-sans antialiased">
+    
     <div class="min-h-screen bg-gray-50">
         <nav x-data="{ open: false }" class="bg-gray-800">
             <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -210,5 +215,6 @@
     </div>
 
     <script src="{{ mix('js/app.js') }}"></script>
+    @livewireScripts
 </body>
 </html>
