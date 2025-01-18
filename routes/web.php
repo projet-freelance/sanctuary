@@ -10,6 +10,7 @@ use APP\Http\Controllers\PrayerIntentionController;
 use App\Http\Controllers\BibleVideoController;
 use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\TeachingController;
+use App\Http\Controllers\RadioController;
 
 use Illuminate\Support\Facades\Gate;
 use Aimeos\Shop\Base\Support;
@@ -104,4 +105,7 @@ Route::get('/meditate', [QuoteController::class, 'randomQuote'])->name('quote.ra
 Route::resource('teachings', TeachingController::class);
 
 // Intégration du fichier auth pour les routes d'authentification
+
+//radio
+Route::get('/radios', [RadioController::class, 'index'])->name('radios.index');
 require __DIR__.'/auth.php';
