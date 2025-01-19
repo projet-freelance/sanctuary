@@ -1,5 +1,123 @@
 @extends('layouts.app')
 
+<style>
+/* Variables CSS */
+:root {
+    --primary: #6B46C1;
+    --primary-dark: #553C9A;
+    --primary-light: #9F7AEA;
+    --transition-fast: 0.3s;
+    --transition-slow: 0.6s;
+    --bounce: cubic-bezier(0.4, 0, 0.2, 1.5);
+}
+
+/* Animations de base améliorées */
+.transition-all {
+    transition: all var(--transition-fast) var(--bounce);
+}
+
+/* Animations des cartes améliorées */
+.grid > div {
+    transition: transform var(--transition-fast) var(--bounce),
+                box-shadow var(--transition-fast) ease,
+                opacity var(--transition-slow) ease;
+    will-change: transform, box-shadow, opacity;
+    transform-origin: center center;
+}
+
+.grid > div:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 
+                0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Animations des icônes améliorées */
+.fas {
+    transition: all var(--transition-fast) var(--bounce);
+    will-change: transform, color;
+}
+
+.grid > div:hover .fas {
+    transform: scale(1.2) rotate(8deg);
+    color: var(--primary-light);
+}
+
+/* Effet de parallaxe optimisé */
+.parallax {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+/* Animations de texte */
+.text-gradient {
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: gradient 8s ease infinite;
+    background-size: 200% 200%;
+}
+
+@keyframes gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Animation du hero */
+.hero-content {
+    animation: heroFadeIn 1.2s var(--bounce) forwards;
+}
+
+@keyframes heroFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Effet de hover sur les boutons */
+.button-hover {
+    transition: all var(--transition-fast) var(--bounce);
+    position: relative;
+    overflow: hidden;
+}
+
+.button-hover::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300%;
+    height: 300%;
+    background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 60%);
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform var(--transition-fast) ease-out;
+}
+
+.button-hover:hover::after {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* Animations des sections */
+.section-fade {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all var(--transition-slow) ease-out;
+}
+
+.section-fade.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+</style>
+
 @section('content')
     <!-- Hero Section -->
     <section class="bg-cover bg-center h-screen relative" style="background-image: url('{{ asset('images/prayer.jpg') }}');">
@@ -138,4 +256,145 @@
             </a>
         </div>
     </section>
+
+ <script>
+    // Animation pour la section hero avec effet de fade-in
+document.addEventListener('DOMContentLoaded', () => {
+    // Animer le hero section au chargement
+    const heroContent = document.querySelector('.text-center.text-white');
+    if (heroContent) {
+        heroContent.style.opacity = '0';
+        heroContent.style.transform = 'translateY(20px)';
+        
+        setTimeout(() => {
+            heroContent.style.transition = 'opacity 1s ease-out, transform 1s ease-out';
+            heroContent.style.opacity = '1';
+            heroContent.style.transform = 'translateY(0)';
+        }, 300);
+    }
+
+    // Animation des cartes de services au scroll
+    const serviceCards = document.querySelectorAll('.grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3 > div');
+    
+    const observerOptions = {
+        threshold: 0.2,
+        rootMargin: '0px'
+    };
+
+    const cardObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+                setTimeout(() => {
+                    entry.target.style.transition = 'all 0.6s ease-out';
+                    entry.target.style.transform = 'translateY(0)';
+                    entry.target.style.opacity = '1';
+                }, index * 100);
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    serviceCards.forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(30px)';
+        cardObserver.observe(card);
+    });
+
+    // Animation hover pour les cartes de services
+    serviceCards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            card.style.transform = 'translateY(-10px) scale(1.02)';
+            const icon = card.querySelector('.fas');
+            if (icon) {
+                icon.style.transform = 'scale(1.2) rotate(5deg)';
+                icon.style.transition = 'transform 0.3s ease';
+            }
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'translateY(0) scale(1)';
+            const icon = card.querySelector('.fas');
+            if (icon) {
+                icon.style.transform = 'scale(1) rotate(0)';
+            }
+        });
+    });
+
+    // Animation pour les cartes de features
+    const featureCards = document.querySelectorAll('.grid.grid-cols-1.md\\:grid-cols-3 > div');
+    
+    featureCards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            const overlay = card.querySelector('.bg-purple-900\\/50');
+            if (overlay) {
+                overlay.style.transition = 'background-color 0.3s ease';
+                overlay.style.backgroundColor = 'rgba(88, 28, 135, 0.7)';
+            }
+            
+            const content = card.querySelector('.relative.h-full');
+            if (content) {
+                content.style.transform = 'scale(1.05)';
+                content.style.transition = 'transform 0.3s ease';
+            }
+        });
+
+        card.addEventListener('mouseleave', () => {
+            const overlay = card.querySelector('.bg-purple-900\\/50');
+            if (overlay) {
+                overlay.style.backgroundColor = 'rgba(88, 28, 135, 0.5)';
+            }
+            
+            const content = card.querySelector('.relative.h-full');
+            if (content) {
+                content.style.transform = 'scale(1)';
+            }
+        });
+    });
+
+    // Animation pour le bouton "Rejoignez-nous"
+    const joinButton = document.querySelector('a[href="/login"]');
+    if (joinButton) {
+        joinButton.addEventListener('mouseenter', () => {
+            joinButton.style.transform = 'scale(1.05)';
+            joinButton.style.boxShadow = '0 4px 15px rgba(37, 99, 235, 0.3)';
+            joinButton.style.transition = 'all 0.3s ease';
+        });
+
+        joinButton.addEventListener('mouseleave', () => {
+            joinButton.style.transform = 'scale(1)';
+            joinButton.style.boxShadow = 'none';
+        });
+    }
+
+    // Animation pour la section témoignages
+    const testimonialSection = document.querySelector('section.bg-purple-800');
+    if (testimonialSection) {
+        const testimonialObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const content = entry.target.querySelector('.container');
+                    if (content) {
+                        content.style.transition = 'all 0.8s ease-out';
+                        content.style.opacity = '1';
+                        content.style.transform = 'translateY(0)';
+                    }
+                }
+            });
+        }, { threshold: 0.3 });
+
+        testimonialSection.querySelector('.container').style.opacity = '0';
+        testimonialSection.querySelector('.container').style.transform = 'translateY(30px)';
+        testimonialObserver.observe(testimonialSection);
+    }
+
+    // Animation de parallaxe pour l'arrière-plan du hero
+    window.addEventListener('scroll', () => {
+        const heroSection = document.querySelector('section.bg-cover.bg-center.h-screen');
+        if (heroSection) {
+            const scrolled = window.pageYOffset;
+            heroSection.style.backgroundPositionY = `${scrolled * 0.5}px`;
+        }
+    });
+});
+ </script>   
 @endsection
