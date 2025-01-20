@@ -11,6 +11,8 @@ use App\Http\Controllers\BibleVideoController;
 use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\TeachingController;
 use App\Http\Controllers\RadioController;
+use App\Http\Controllers\ChatController;
+
 
 use Illuminate\Support\Facades\Gate;
 use Aimeos\Shop\Base\Support;
@@ -108,4 +110,11 @@ Route::resource('teachings', TeachingController::class);
 
 //radio
 Route::get('/radios', [RadioController::class, 'index'])->name('radios.index');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
+    Route::post('/chat/token', [ChatController::class, 'generateToken']);
+    Route::post('/chat/channels', [ChatController::class, 'createChannel']);
+    Route::get('/chat/channels', [ChatController::class, 'getChannels']);
+});
 require __DIR__.'/auth.php';

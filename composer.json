@@ -10,6 +10,7 @@
         "aimeos/aimeos-laravel": "^2024.10",
         "aloha/twilio": "^3.0",
         "astrotomic/laravel-translatable": "*",
+        "get-stream/stream-chat": "^3.7",
         "laravel-notification-channels/twilio": "^4.0",
         "laravel/breeze": "*",
         "laravel/framework": "^11.31",

@@ -19,6 +19,11 @@ return [
     'from' => env('TWILIO_PHONE_NUMBER'),
     ],
 
+   'stream' => [
+    'api_key' => env('STREAM_API_KEY'),
+    'api_secret' => env('STREAM_API_SECRET'),
+],
+
 
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
