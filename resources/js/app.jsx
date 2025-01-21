@@ -2,7 +2,8 @@ import './bootstrap';
 import Alpine from 'alpinejs';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import ChatApp from './components/ChatApp';
+import axios from 'axios';
+import StreamChatComponent from './components/StreamChatComponent';
 
 // Initialisation d'Alpine.js
 window.Alpine = Alpine;
@@ -15,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const root = createRoot(chatRoot);
         root.render(
             <React.StrictMode>
-                <ChatApp />
+                <StreamChatComponent />
             </React.StrictMode>
         );
     } else {

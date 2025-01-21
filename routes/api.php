@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\StreamChatController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
+Route::middleware('auth:sanctum')->get('/stream-chat/token', [StreamChatController::class, 'getToken']);
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
