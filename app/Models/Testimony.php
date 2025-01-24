@@ -10,11 +10,9 @@ class Testimony extends Model
     protected $fillable = [
         'user_id', 
         'title',
-        'content', 
         'type',  // vocal ou écrit
         'audio_path', 
-        'status',  // en attente, approuvé, rejeté
-        'category'
+       
     ];
 
     public function user() 

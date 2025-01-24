@@ -28,7 +28,7 @@ class TestimonyController extends Controller
             'content' => 'required|string',
             'type' => 'required|string',
             'audio_path' => 'nullable|file|mimes:audio/mpeg,audio/wav|max:10240',
-            'category' => 'nullable|string',
+            
         ]);
 
         $testimony = new Testimony();
@@ -37,8 +37,6 @@ class TestimonyController extends Controller
         $testimony->content = $request->content;
         $testimony->type = $request->type;
         $testimony->audio_path = $request->file('audio_path') ? $request->file('audio_path')->store('audio') : null;
-        $testimony->status = 'pending';
-        $testimony->category = $request->category;
         $testimony->save();
 
         return redirect()->route('testimonies.index')->with('success', 'Témoignage créé avec succès.');
@@ -66,7 +64,7 @@ class TestimonyController extends Controller
             'content' => 'required|string',
             'type' => 'required|string',
             'audio_path' => 'nullable|file|mimes:audio/mpeg,audio/wav|max:10240',
-            'category' => 'nullable|string',
+           
         ]);
 
         $testimony = Testimony::findOrFail($id);
@@ -74,7 +72,7 @@ class TestimonyController extends Controller
         $testimony->content = $request->content;
         $testimony->type = $request->type;
         $testimony->audio_path = $request->file('audio_path') ? $request->file('audio_path')->store('audio') : $testimony->audio_path;
-        $testimony->category = $request->category;
+ 
         $testimony->save();
 
         return redirect()->route('testimonies.index')->with('success', 'Témoignage mis à jour.');
