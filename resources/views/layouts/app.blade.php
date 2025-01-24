@@ -16,91 +16,101 @@
 <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 @livewireScripts
 </head>
-<body class="font-sans antialiased">
-    
-    <div class="min-h-screen bg-gray-50">
-        <nav x-data="{ open: false }" class="bg-gray-800">
-            <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-                <div class="relative flex h-16 items-center justify-between">
-                    <!-- Mobile menu button -->
-                    <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
-                        <button @click="open = ! open" type="button" class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
-                            <span class="sr-only">Menu principal</span>
-                            <svg :class="{'hidden': open, 'block': ! open }" class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                            </svg>
-                            <svg :class="{'block': open, 'hidden': ! open }" class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
-                    </div>
 
-                    <!-- Logo et Navigation Desktop -->
-                    <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                        <div class="flex shrink-0 items-center">
-                            <a href="{{ url('/') }}">
-                                <x-application-logo class="block h-8 w-auto text-white" />
-                            </a>
-                        </div>
-
-                        <!-- Liens de navigation desktop -->
+<body class="font-sans antialiased bg-gray-50">
+    <div class="min-h-screen flex flex-col">
+        <nav x-data="{ mobileOpen: false }" class="bg-gray-800 shadow-md">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <!-- Logo -->
+                    <div class="flex items-center">
+                        <a href="{{ url('/') }}" class="flex-shrink-0">
+                            <x-application-logo class="h-8 w-auto text-white"/>
+                        </a>
+                        
+                        <!-- Navigation Desktop -->
                         <div class="hidden sm:ml-6 sm:block">
                             <div class="flex space-x-4">
                                 @guest
-                                    <a href="{{ url('/') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">{{ __('Accueil') }}</a>
-                                    <a href="{{ route('about') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">{{ __('À propos') }}</a>
+                                    <a href="{{ url('/') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md">
+                                        <i class="fas fa-home mr-2"></i>Accueil
+                                    </a>
+                                    <a href="{{ route('about') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md">
+                                        <i class="fas fa-info-circle mr-2"></i>À propos
+                                    </a>
                                 @endguest
 
                                 @auth
-                                    <a href="{{ url('/') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">{{ __('Accueil') }}</a>
+                                    <a href="{{ url('/') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md">
+                                        <i class="fas fa-home mr-2"></i>Accueil
+                                    </a>
 
-                                    <!-- Menu "Spiritualité" -->
-                                    <div class="relative" x-data="{ open: false }" @mouseleave="open = false">
-                                <button @mouseenter="open = true" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-white hover:text-gray-300 transition duration-150 ease-in-out">
-                                    Spiritualité
-                                    <svg class="ml-2 h-4 w-4" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                                    </svg>
-                                </button>
-                                <div x-show="open" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform scale-y-0" x-transition:enter-end="opacity-100 transform scale-y-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 transform scale-y-100" x-transition:leave-end="opacity-0 transform scale-y-0" class="absolute left-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5" role="menu">
-                                    <a href="{{ route('bible.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Bible</a>
-                                    <a href="{{ route('prayers.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Prières</a>
-                                    <a href="{{ route('quote.random') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Citations</a>
-                                </div>
-                            </div>
+                                    <!-- Menu Spiritualité -->
+                                    <div class="relative group">
+                                        <button class="text-white hover:bg-gray-700 px-3 py-2 rounded-md flex items-center">
+                                            <i class="fas fa-church mr-2"></i>
+                                            Spiritualité
+                                            <svg class="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                            </svg>
+                                        </button>
+                                        <div class="absolute hidden group-hover:block bg-white rounded-md shadow-lg py-1 z-20">
+                                            <a href="{{ route('bible.index') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                                <i class="fas fa-book mr-2"></i>Bible
+                                            </a>
+                                            <a href="{{ route('prayers.index') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                                <i class="fas fa-pray mr-2"></i>Prières
+                                            </a>
+                                            <a href="{{ route('quote.random') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                                <i class="fas fa-quote-right mr-2"></i>Citations
+                                            </a>
+                                        </div>
+                                    </div>
 
-                                    <!-- Menu "Enseignement" -->
-                                    <div class="relative" x-data="{ open: false }" @mouseleave="open = false">
-                                <button @mouseenter="open = true" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-white hover:text-gray-300 transition duration-150 ease-in-out">
-                                    Enseignement
-                                    <svg class="ml-2 h-4 w-4" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                                    </svg>
-                                </button>
-                                <div x-show="open" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform scale-y-0" x-transition:enter-end="opacity-100 transform scale-y-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 transform scale-y-100" x-transition:leave-end="opacity-0 transform scale-y-0" class="absolute left-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5" role="menu">
-                                    <a href="{{ route('teachings.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Enseignements</a>
-                                    <a href="{{ route('biblevideos.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Vidéos</a>
-                                    <a href="{{ route('chat.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Chat direct</a>
-                                </div>
-                            </div>
+                                    <!-- Menu Enseignement -->
+                                    <div class="relative group">
+                                        <button class="text-white hover:bg-gray-700 px-3 py-2 rounded-md flex items-center">
+                                            <i class="fas fa-graduation-cap mr-2"></i>
+                                            Enseignement
+                                            <svg class="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                            </svg>
+                                        </button>
+                                        <div class="absolute hidden group-hover:block bg-white rounded-md shadow-lg py-1 z-20">
+                                            <a href="{{ route('teachings.index') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                                <i class="fas fa-chalkboard-teacher mr-2"></i>Enseignements
+                                            </a>
+                                            <a href="{{ route('biblevideos.index') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                                <i class="fas fa-video mr-2"></i>Vidéos
+                                            </a>
+                                            <a href="{{ route('chat.index') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                                <i class="fas fa-comments mr-2"></i>Chat direct
+                                            </a>
+                                        </div>
+                                    </div>
 
+                                    <!-- Menu Partenaire -->
+                                    <div class="relative group">
+                                        <button class="text-white hover:bg-gray-700 px-3 py-2 rounded-md flex items-center">
+                                            <i class="fas fa-handshake mr-2"></i>
+                                            Partenaire
+                                            <svg class="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                            </svg>
+                                        </button>
+                                        <div class="absolute hidden group-hover:block bg-white rounded-md shadow-lg py-1 z-20">
+                                            <a href="{{ route('radios.index') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                                <i class="fas fa-broadcast-tower mr-2"></i>Radios
+                                            </a>
+                                        </div>
+                                    </div>
 
-                               <!-- Menu "partenair" -->
-                               <div class="relative" x-data="{ open: false }" @mouseleave="open = false">
-                                <button @mouseenter="open = true" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-white hover:text-gray-300 transition duration-150 ease-in-out">
-                                    partenair
-                                    <svg class="ml-2 h-4 w-4" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                                    </svg>
-                                </button>
-                                <div x-show="open" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform scale-y-0" x-transition:enter-end="opacity-100 transform scale-y-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 transform scale-y-100" x-transition:leave-end="opacity-0 transform scale-y-0" class="absolute left-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5" role="menu">
-                                <a href="{{ route('radios.index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">{{ __('Radios') }}</a>
-                                </div>
-                            </div>
-
-                                    <a href="{{ route('testimonies.index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">{{ __('Témoignages') }}</a>
-                                    <a href="{{ route('aimeos_home') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">{{ __('Produits') }}</a>
-                                   
+                                    <a href="{{ route('testimonies.index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md flex items-center">
+                                        <i class="fas fa-comment-dots mr-2"></i>Témoignages
+                                    </a>
+                                    <a href="{{ route('aimeos_home') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md flex items-center">
+                                        <i class="fas fa-shopping-cart mr-2"></i>Produits
+                                    </a>
                                 @endauth
                             </div>
                         </div>
@@ -108,93 +118,158 @@
 
                     <!-- Menu utilisateur -->
                     @auth
-                    <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                        <div class="relative ml-3" x-data="{ open: false }">
-                            <div>
-                                <button @click="open = ! open" type="button" class="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                    <div class="hidden sm:ml-6 sm:block">
+                        <div class="flex items-center">
+                            <div class="relative" x-data="{ userMenuOpen: false }">
+                                <button 
+                                    @click="userMenuOpen = !userMenuOpen" 
+                                    class="bg-gray-800 flex text-sm rounded-full focus:outline-none">
                                     <span class="sr-only">Menu utilisateur</span>
                                     <div class="h-8 w-8 rounded-full bg-gray-700 flex items-center justify-center text-white">
                                         {{ substr(Auth::user()->name, 0, 1) }}
                                     </div>
                                 </button>
-                            </div>
-                            <div x-show="open" @click.away="open = false" class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                                <div class="px-4 py-2 text-sm text-gray-700">{{ Auth::user()->name }}</div>
-                                <form method="POST" action="{{ route('logout') }}">
-                                    @csrf
-                                    <button type="submit" class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100">{{ __('Se Déconnecter') }}</button>
-                                </form>
+                                
+                                <div 
+                                    x-show="userMenuOpen" 
+                                    @click.away="userMenuOpen = false"
+                                    class="absolute right-0 w-48 mt-2 origin-top-right bg-white rounded-md shadow-lg">
+                                    <div class="py-1">
+                                        <div class="px-4 py-2 text-sm text-gray-700">
+                                            {{ Auth::user()->name }}
+                                        </div>
+                                        <form method="POST" action="{{ route('logout') }}">
+                                            @csrf
+                                            <button type="submit" class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100">
+                                                <i class="fas fa-sign-out-alt mr-2"></i>Déconnexion
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     @endauth
+
+                    <!-- Bouton mobile -->
+                    <div class="-mr-2 flex sm:hidden">
+                        <button 
+                            @click="mobileOpen = !mobileOpen" 
+                            class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700">
+                            <span class="sr-only">Menu principal</span>
+                            <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                                <path 
+                                    :class="{'hidden': mobileOpen, 'block': !mobileOpen}"
+                                    stroke-linecap="round" 
+                                    stroke-linejoin="round" 
+                                    stroke-width="2" 
+                                    d="M4 6h16M4 12h16M4 18h16" 
+                                />
+                                <path 
+                                    :class="{'block': mobileOpen, 'hidden': !mobileOpen}"
+                                    stroke-linecap="round" 
+                                    stroke-linejoin="round" 
+                                    stroke-width="2" 
+                                    d="M6 18L18 6M6 6l12 12" 
+                                />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
             </div>
 
             <!-- Menu mobile -->
-            <div x-show="open" class="sm:hidden">
-                <div class="space-y-1 px-2 pb-3 pt-2">
+            <div x-show="mobileOpen" class="sm:hidden">
+                <div class="px-2 pt-2 pb-3 space-y-1">
                     @guest
-                        <a href="{{ url('/') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">{{ __('Accueil') }}</a>
-                        <a href="{{ route('about') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">{{ __('À propos') }}</a>
+                        <a href="{{ url('/') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md">
+                            <i class="fas fa-home mr-2"></i>Accueil
+                        </a>
+                        <a href="{{ route('about') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md">
+                            <i class="fas fa-info-circle mr-2"></i>À propos
+                        </a>
                     @endguest
 
                     @auth
-                        <a href="{{ url('/') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">{{ __('Accueil') }}</a>
+                        <a href="{{ url('/') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md">
+                            <i class="fas fa-home mr-2"></i>Accueil
+                        </a>
+
+                        <!-- Mobile Spiritualité -->
+                        <div x-data="{ spiritualiteOpen: false }">
+                            <button 
+                                @click="spiritualiteOpen = !spiritualiteOpen"
+                                class="w-full flex justify-between items-center text-white hover:bg-gray-700 px-3 py-2 rounded-md">
+                                <span><i class="fas fa-church mr-2"></i>Spiritualité</span>
+                                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                </svg>
+                            </button>
+                            <div x-show="spiritualiteOpen" class="pl-6">
+                                <a href="{{ route('bible.index') }}" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700">
+                                    <i class="fas fa-book mr-2"></i>Bible
+                                </a>
+                                <a href="{{ route('prayers.index') }}" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700">
+                                    <i class="fas fa-pray mr-2"></i>Prières
+                                </a>
+                                <a href="{{ route('quote.random') }}" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700">
+                                    <i class="fas fa-quote-right mr-2"></i>Citations
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Mobile Enseignement -->
+<div x-data="{ enseignementOpen: false }">
+    <button 
+        @click="enseignementOpen = !enseignementOpen"
+        class="w-full flex justify-between items-center text-white hover:bg-gray-700 px-3 py-2 rounded-md">
+        <span><i class="fas fa-graduation-cap mr-2"></i>Enseignement</span>
+        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+        </svg>
+    </button>
+    <div x-show="enseignementOpen" class="pl-6">
+        <a href="{{ route('teachings.index') }}" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700">
+            <i class="fas fa-chalkboard-teacher mr-2"></i>Enseignements
+        </a>
+        <a href="{{ route('biblevideos.index') }}" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700">
+            <i class="fas fa-video mr-2"></i>Vidéos
+        </a>
+        <a href="{{ route('chat.index') }}" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700">
+            <i class="fas fa-comments mr-2"></i>Chat direct
+        </a>
+    </div>
+</div>
+
+<!-- Mobile Partenaire -->
+<div x-data="{ partenairesOpen: false }">
+    <button 
+        @click="partenairesOpen = !partenairesOpen"
+        class="w-full flex justify-between items-center text-white hover:bg-gray-700 px-3 py-2 rounded-md">
+        <span><i class="fas fa-handshake mr-2"></i>Partenaire</span>
+        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+        </svg>
+    </button>
+    <div x-show="partenairesOpen" class="pl-6">
+        <a href="{{ route('radios.index') }}" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700">
+            <i class="fas fa-broadcast-tower mr-2"></i>Radios
+        </a>
+    </div>
+</div>
+
+                        <!-- Autres menus mobiles similaires -->
                         
-                        <!-- Mobile menu pour Spiritualité -->
-                        <div x-data="{ open: false }">
-                            <button @click="open = !open" class="w-full flex justify-between items-center px-3 py-2 rounded-md text-base font-medium text-white hover:text-gray-300 hover:bg-gray-700">
-                                <span>Spiritualité</span>
-                                <svg class="h-5 w-5 transform transition-transform duration-200" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                                </svg>
-                            </button>
-                            <div x-show="open" class="pl-4">
-                                <a href="{{ route('bible.index') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">Bible</a>
-                                <a href="{{ route('prayers.index') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">Prières</a>
-                                <a href="{{ route('quote.random') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">Citations</a>
-                            </div>
-                        </div>
-                       
-
-                        <!-- Mobile menu pour Enseignement -->
-                        <div x-data="{ open: false }">
-                            <button @click="open = !open" class="w-full flex justify-between items-center px-3 py-2 rounded-md text-base font-medium text-white hover:text-gray-300 hover:bg-gray-700">
-                                <span>Enseignement</span>
-                                <svg class="h-5 w-5 transform transition-transform duration-200" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                                </svg>
-                            </button>
-                            <div x-show="open" class="pl-4">
-                                <a href="{{ route('teachings.index') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">Bible</a>
-                                <a href="{{ route('biblevideos.index') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">Prières</a>
-                                <a href="{{ route('chat.index') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">Prières</a>
-                                
-                            </div>
-                        </div>
-
-                        <div x-data="{ open: false }">
-                            <button @click="open = !open" class="w-full flex justify-between items-center px-3 py-2 rounded-md text-base font-medium text-white hover:text-gray-300 hover:bg-gray-700">
-                                <span>partenair</span>
-                                <svg class="h-5 w-5 transform transition-transform duration-200" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                                </svg>
-                            </button>
-                            <div x-show="open" class="pl-4">
-                                <a href="{{ route('radios.index') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">Radios</a>
-                                
-                            </div>
-                        </div>
-                       
-                    
-                        <a href="{{ route('testimonies.index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">{{ __('Témoignages') }}</a>
-                        <a href="{{ route('aimeos_home') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">{{ __('Produits') }}</a>
-                   
+                        <a href="{{ route('testimonies.index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md">
+                            <i class="fas fa-comment-dots mr-2"></i>Témoignages
+                        </a>
+                        <a href="{{ route('aimeos_home') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md">
+                            <i class="fas fa-shopping-cart mr-2"></i>Produits
+                        </a>
                     @endauth
                 </div>
             </div>
         </nav>
+
 
         <!-- Contenu principal -->
         <main>
