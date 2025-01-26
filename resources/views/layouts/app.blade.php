@@ -83,7 +83,7 @@
                                             <a href="{{ route('biblevideos.index') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
                                                 <i class="fas fa-video mr-2"></i>Vidéos
                                             </a>
-                                            <a href="{{ route('chat.index') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                            <a href="{{ route('consultations.index') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
                                                 <i class="fas fa-comments mr-2"></i>Chat direct
                                             </a>
                                         </div>
@@ -234,7 +234,7 @@
         <a href="{{ route('biblevideos.index') }}" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700">
             <i class="fas fa-video mr-2"></i>Vidéos
         </a>
-        <a href="{{ route('chat.index') }}" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700">
+        <a href="{{ route('consultations.index') }}" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700">
             <i class="fas fa-comments mr-2"></i>Chat direct
         </a>
     </div>

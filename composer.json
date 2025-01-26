@@ -17,6 +17,7 @@
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.5",
         "nunomaduro/termwind": "^2.0",
+        "paydunya/paydunya": "^1.0",
         "spatie/laravel-medialibrary": "^11.12",
         "twilio/sdk": "^8.3"
     },

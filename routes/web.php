@@ -11,6 +11,7 @@ use App\Http\Controllers\BibleVideoController;
 use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\TeachingController;
 use App\Http\Controllers\RadioController;
+use App\Http\Controllers\ConsultationController;
 
 
 use Illuminate\Support\Facades\Gate;
@@ -115,5 +116,13 @@ Route::get('/chat', function () {
 })->middleware(['auth'])->name('chat.index');
 ;
 
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/consultations', [ConsultationController::class, 'index'])->name('consultations.index');
+    Route::get('/consultations/create', [ConsultationController::class, 'create'])->name('consultations.create');
+    Route::post('/consultations', [ConsultationController::class, 'store'])->name('consultations.store');
+    Route::get('/consultations/{consultation}', [ConsultationController::class, 'show'])->name('consultations.show');
+});
 
 require __DIR__.'/auth.php';
