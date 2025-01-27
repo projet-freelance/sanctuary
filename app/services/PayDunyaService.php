@@ -3,34 +3,64 @@
 namespace App\Services;
 
 use Paydunya\Setup;
+use Paydunya\Checkout\Store;
 use Paydunya\Checkout\CheckoutInvoice;
 
-class PayDunyaService
+class PaydunyaService
 {
+    protected $invoice;
+
     public function __construct()
     {
-        Setup::setMasterKey(config('services.paydunya.master_key'));
-        Setup::setPrivateKey(config('services.paydunya.private_key'));
-        Setup::setPublicKey(config('services.paydunya.public_key'));
-        Setup::setToken(config('services.paydunya.token'));
-        Setup::setMode(config('services.paydunya.mode')); // 'test' ou 'live'
+        // Configuration de PayDunya
+        Setup::setMasterKey(env('PAYDUNYA_MASTER_KEY'));
+        Setup::setPublicKey(env('PAYDUNYA_PUBLIC_KEY'));
+        Setup::setPrivateKey(env('PAYDUNYA_PRIVATE_KEY'));
+        Setup::setToken(env('PAYDUNYA_TOKEN'));
+        Setup::setMode(env('PAYDUNYA_MODE', 'test'));
 
-        // Information de l'entreprise
-        Setup::setAccountName("Nom de votre entreprise");
-        Setup::setLogoUrl("https://exemple.com/logo.png"); // Optionnel
-        Setup::setReturnUrl(route('consultations.success')); // URL de retour après paiement
-        Setup::setCancelUrl(route('consultations.cancel')); // URL d'annulation
+        // Configuration du store
+        Store::setName("Site de Rencontre");
+        Store::setTagline("Abonnement aux services premium");
+        Store::setPhoneNumber("0584656447");
+        Store::setPostalAddress("Dakar, Sénégal");
+        Store::setWebsiteUrl(config('app.url'));
+        Store::setLogoUrl(asset('images/logo.png'));
+
+        $this->invoice = new CheckoutInvoice();
     }
 
-    public function createInvoice($amount, $description)
+    /**
+     * Créer une facture PayDunya.
+     */
+    public function createInvoice($amount, $description, $cancelUrl, $returnUrl)
     {
-        $invoice = new CheckoutInvoice();
-        $invoice->addItem("Consultation", 1, $amount, $amount, $description);
+        $this->invoice->addItem("Consultation", 1, $amount, $amount);
+        $this->invoice->setTotalAmount($amount);
+        $this->invoice->setDescription($description);
+        $this->invoice->setCancelUrl($cancelUrl);
+        $this->invoice->setReturnUrl($returnUrl);
 
-        if ($invoice->create()) {
-            return $invoice->getInvoiceUrl(); // URL à envoyer au client
-        } else {
-            throw new \Exception($invoice->response_text);
+        if ($this->invoice->create()) {
+            return $this->invoice->getInvoiceUrl();
         }
+
+        return null;
+    }
+
+    /**
+     * Confirmer un paiement PayDunya.
+     */
+    public function confirmPayment($token)
+    {
+        return $this->invoice->confirm($token);
+    }
+
+    /**
+     * Obtenir la dernière erreur PayDunya.
+     */
+    public function getLastError()
+    {
+        return $this->invoice->response_text;
     }
 }

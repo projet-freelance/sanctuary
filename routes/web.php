@@ -116,7 +116,10 @@ Route::get('/chat', function () {
 })->middleware(['auth'])->name('chat.index');
 ;
 
+Route::post('/consultations', [ConsultationController::class, 'store'])->name('consultations.store');
 
+Route::get('/payment/cancel', [ConsultationController::class, 'paymentCancel'])->name('payment.cancel');
+Route::get('/payment/success', [ConsultationController::class, 'paymentSuccess'])->name('payment.success');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/consultations', [ConsultationController::class, 'index'])->name('consultations.index');
