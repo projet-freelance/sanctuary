@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Consultation;
-use App\Services\PaydunyaService; // Service dédié pour PayDunya
+use App\Services\PaydunyaService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -39,6 +39,19 @@ class ConsultationController extends Controller
         return view('consultations.create');
     }
 
+    public function show($id)
+{
+    $consultation = Consultation::findOrFail($id); // Récupérer la consultation par son ID
+
+    // Retourner la vue avec l'objet consultation
+    return view('consultations.show', compact('consultation'));
+}
+
+
+
+    
+
+
     /**
      * Enregistrer une nouvelle consultation et initier le paiement.
      */
@@ -63,7 +76,7 @@ class ConsultationController extends Controller
             ]);
 
             // Créer une facture PayDunya
-            $amount = 100.00; // Montant fixe pour l'exemple
+            $amount = 500.00; // Montant fixe pour l'exemple
             $description = "Paiement pour consultation";
             $cancelUrl = route('payment.cancel');
             $returnUrl = route('payment.success');
@@ -180,9 +193,5 @@ class ConsultationController extends Controller
     /**
      * Afficher les détails d'une consultation.
      */
-    public function show(Consultation $consultation)
-    {
-        $this->authorize('view', $consultation);
-        return view('consultations.show', compact('consultation'));
-    }
+    
 }

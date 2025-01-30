@@ -125,7 +125,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/consultations', [ConsultationController::class, 'index'])->name('consultations.index');
     Route::get('/consultations/create', [ConsultationController::class, 'create'])->name('consultations.create');
     Route::post('/consultations', [ConsultationController::class, 'store'])->name('consultations.store');
-    Route::get('/consultations/{consultation}', [ConsultationController::class, 'show'])->name('consultations.show');
 });
+
+Route::middleware('auth')->get('/consultations/{id}', [ConsultationController::class, 'show'])->name('consultations.show');
+
 
 require __DIR__.'/auth.php';

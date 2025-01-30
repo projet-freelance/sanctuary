@@ -10,6 +10,12 @@
                     <p class="text-xl text-gray-600 mb-8">Prenez un moment pour partager vos préoccupations avec nous</p>
                 </div>
 
+                @if (session('error'))
+                    <div class="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+                        {{ session('error') }}
+                    </div>
+                @endif
+
                 <form action="{{ route('consultations.store') }}" method="POST" class="space-y-8">
                     @csrf
 
@@ -19,11 +25,21 @@
                             <label for="type" class="block text-lg font-medium text-purple-900 mb-2">Type de consultation</label>
                             <select name="type" id="type" required 
                                 class="mt-1 block w-full px-4 py-3 border border-purple-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-gray-700">
-                                <option value="confession" {{ old('type') == 'confession' ? 'selected' : '' }}>Confession</option>
                                 <option value="guidance" {{ old('type') == 'guidance' ? 'selected' : '' }}>Guidance spirituelle</option>
                                 <option value="prayer" {{ old('type') == 'prayer' ? 'selected' : '' }}>Prière commune</option>
                             </select>
                             @error('type')
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Date et heure -->
+                        <div>
+                            <label for="scheduled_at" class="block text-lg font-medium text-purple-900 mb-2">Date et heure de la consultation</label>
+                            <input type="datetime-local" name="scheduled_at" id="scheduled_at" required
+                                   class="mt-1 block w-full px-4 py-3 border border-purple-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-gray-700"
+                                   value="{{ old('scheduled_at') }}">
+                            @error('scheduled_at')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
@@ -47,6 +63,10 @@
                             class="w-full flex justify-center py-3 px-6 border border-transparent rounded-full shadow-lg text-lg font-medium text-white bg-purple-700 hover:bg-purple-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all duration-300">
                             Confirmer la consultation
                         </button>
+                    </div>
+
+                    <div class="mt-4 text-center text-gray-600">
+                        <p>Après confirmation, vous serez redirigé vers PayDunya pour effectuer le paiement.</p>
                     </div>
                 </form>
             </div>

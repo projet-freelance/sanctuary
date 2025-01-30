@@ -12,7 +12,7 @@
                     <div class="border-b border-purple-100 pb-4">
                         <div class="flex items-center justify-between">
                             <span class="text-lg font-medium text-purple-700">Date et Heure</span>
-                            <span class="text-lg text-purple-900">{{ $consultation->scheduled_at->format('d/m/Y à H:i') }}</span>
+                            <span class="text-lg text-purple-900">{{ \Carbon\Carbon::parse($consultation->scheduled_at)->format('d/m/Y à H:i') }}</span>
                         </div>
                     </div>
 

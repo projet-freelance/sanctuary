@@ -65,7 +65,7 @@
                 </div>
 
                 <div class="bg-purple-50 rounded-lg p-6 hover:shadow-md transition-shadow">
-                    <h3 class="font-semibold text-xl mb-2 text-purple-900">Confession et Réconciliation</h3>
+                    
                     <p class="text-gray-600">Espace confidentiel pour le sacrement de réconciliation</p>
                 </div>
             </div>
@@ -89,9 +89,13 @@
                             <div class="py-4">
                                 <div class="flex items-center justify-between">
                                     <div>
-                                        <p class="text-sm font-medium text-gray-900">
-                                            {{ $consultation->scheduled_at->format('d/m/Y à H:i') }}
-                                        </p>
+                                        @if($consultation->scheduled_at)
+                                            <p class="text-sm font-medium text-gray-900">
+                                            {{ \Carbon\Carbon::parse($consultation->scheduled_at)->format('d/m/Y à H:i') }}
+                                            </p>
+                                        @else
+                                            <p class="text-sm font-medium text-gray-500">Date non programmée</p>
+                                        @endif
                                         <p class="mt-1 text-sm text-gray-500">
                                             Type: {{ ucfirst($consultation->type) }}
                                         </p>
