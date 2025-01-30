@@ -39,18 +39,22 @@ class ConsultationController extends Controller
         return view('consultations.create');
     }
 
+    /**
+     * Afficher les détails d'une consultation avec l'historique des paiements.
+     */
     public function show($id)
-{
-    $consultation = Consultation::findOrFail($id); // Récupérer la consultation par son ID
-
-    // Retourner la vue avec l'objet consultation
-    return view('consultations.show', compact('consultation'));
-}
-
-
-
+    {
+        // Récupérer la consultation avec son historique de paiements
+        $consultation = Consultation::with('paiements')->findOrFail($id);
     
-
+        // Vérifier si l'utilisateur connecté est le propriétaire de la consultation
+        if ($consultation->user_id !== Auth::id()) {
+            abort(403, 'Accès interdit.');
+        }
+    
+        // Retourner la vue avec la consultation et son historique de paiements
+        return view('consultations.show', compact('consultation'));
+    }
 
     /**
      * Enregistrer une nouvelle consultation et initier le paiement.
@@ -58,23 +62,24 @@ class ConsultationController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'scheduled_at' => 'required|date|after:now',
+            'type' => 'required|string',
             'notes' => 'nullable|string|max:500',
         ]);
 
         DB::beginTransaction();
         try {
-            // Trouver le prochain créneau disponible
-            $scheduledAt = $this->getNextAvailableSlot($request->scheduled_at);
-
-            // Enregistrer la consultation
+            // Trouver le prochain créneau disponible après le paiement
+            $scheduledAt = $this->getNextAvailableSlot(now()); // Appel avec `now()`
+    
+            // Enregistrer la consultation avec la date et l'heure automatiquement attribuées
             $consultation = Consultation::create([
                 'user_id' => Auth::id(),
+                'type' => $request->type,
                 'scheduled_at' => $scheduledAt,
                 'notes' => $request->notes,
                 'status' => 'pending',
             ]);
-
+            
             // Créer une facture PayDunya
             $amount = 500.00; // Montant fixe pour l'exemple
             $description = "Paiement pour consultation";
@@ -117,18 +122,23 @@ class ConsultationController extends Controller
                     'successful'
                 );
 
-                // Mettre à jour le statut de la consultation
+                // Mettre à jour le statut de la consultation et programmer automatiquement un créneau horaire
                 $consultation = Consultation::where('user_id', Auth::id())
                     ->where('status', 'pending')
                     ->latest()
                     ->first();
 
                 if ($consultation) {
-                    $consultation->update(['status' => 'scheduled']);
+                    // Trouver le prochain créneau horaire disponible
+                    $scheduledAt = $this->getNextAvailableSlot(now()); // Appel avec `now()`
+                    $consultation->update([
+                        'scheduled_at' => $scheduledAt,
+                        'status' => 'scheduled',
+                    ]);
                 }
 
                 DB::commit();
-                return redirect()->route('consultations.index')->with('success', 'Paiement réussi.');
+                return redirect()->route('consultations.index')->with('success', 'Paiement réussi et consultation programmée.');
             } else {
                 DB::rollBack();
                 Log::error('Paiement non confirmé : ' . $this->paydunyaService->getLastError());
@@ -178,7 +188,9 @@ class ConsultationController extends Controller
 
         while (true) {
             if ($currentDate->isWeekday()) {
+                // Vérifier combien de consultations sont déjà planifiées pour cette journée
                 $dailyCount = Consultation::whereDate('scheduled_at', $currentDate->toDateString())->count();
+
                 if ($dailyCount < $maxConsultationsPerDay) {
                     $slotTime = $startHour + $dailyCount;
                     if ($slotTime < $endHour) {
@@ -189,9 +201,4 @@ class ConsultationController extends Controller
             $currentDate->addDay();
         }
     }
-
-    /**
-     * Afficher les détails d'une consultation.
-     */
-    
 }

@@ -33,17 +33,6 @@
                             @enderror
                         </div>
 
-                        <!-- Date et heure -->
-                        <div>
-                            <label for="scheduled_at" class="block text-lg font-medium text-purple-900 mb-2">Date et heure de la consultation</label>
-                            <input type="datetime-local" name="scheduled_at" id="scheduled_at" required
-                                   class="mt-1 block w-full px-4 py-3 border border-purple-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-gray-700"
-                                   value="{{ old('scheduled_at') }}">
-                            @error('scheduled_at')
-                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-
                         <!-- Notes -->
                         <div>
                             <label for="notes" class="block text-lg font-medium text-purple-900 mb-2">Vos préoccupations (confidentiel)</label>
@@ -55,6 +44,11 @@
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
+                    </div>
+
+                    <!-- Message de confirmation de l'heure de consultation -->
+                    <div class="mt-4 text-center text-gray-600">
+                        <p>La date et l'heure de la consultation seront automatiquement attribuées après la confirmation du paiement.</p>
                     </div>
 
                     <!-- Bouton de confirmation -->

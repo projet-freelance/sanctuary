@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -13,46 +14,40 @@ class Consultation extends Model
         'scheduled_at', 
         'status', 
         'queue_position', 
-        'notes'
+        'notes',
+        'type' // Ajout du champ 'type' qui est utilisé dans la vue
     ];
 
     protected $dates = ['scheduled_at'];
 
+    /**
+     * Définir la relation avec le modèle User.
+     * Une consultation appartient à un utilisateur.
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function payment()
+    // Dans app/Models/Consultation.php
+
+
+
+    /**
+     * Définir la relation avec le modèle Payment.
+     * Une consultation peut avoir plusieurs paiements.
+     */
+    public function paiements()
     {
-        return $this->hasOne(Payment::class);
+        return $this->hasMany(Payment::class);
     }
 
+    /**
+     * Scopes for pending consultations.
+     */
     public function scopePending($query)
     {
         return $query->where('status', 'pending')
                      ->orderBy('created_at');
-    }
-}
-
-class Payment extends Model
-{
-    protected $fillable = [
-        'user_id', 
-        'consultation_id', 
-        'amount', 
-        'transaction_id', 
-        'status', 
-        'payment_method'
-    ];
-
-    public function consultation()
-    {
-        return $this->belongsTo(Consultation::class);
-    }
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
     }
 }
