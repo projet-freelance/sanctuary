@@ -12,7 +12,8 @@ use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\TeachingController;
 use App\Http\Controllers\RadioController;
 use App\Http\Controllers\ConsultationController;
-
+use App\Http\Controllers\AdminConsultationController;
+use App\Http\Controllers\EventController;
 
 use Illuminate\Support\Facades\Gate;
 use Aimeos\Shop\Base\Support;
@@ -129,5 +130,13 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware('auth')->get('/consultations/{id}', [ConsultationController::class, 'show'])->name('consultations.show');
 
+Route::get('/events/{id}', [EventController::class, 'show'])->name('events.show');
 
+Route::post('/events/{id}/purchase', [EventController::class, 'purchase'])->name('events.purchase');
+
+// Routes réservées aux administrateurs Aimeos
+Route::prefix('admin/consultations')->middleware('aimeos.admin')->group(function () {
+    Route::get('/', [AdminConsultationController::class, 'index'])->name('admin.consultations.index');
+    Route::post('/complete/{id}', [AdminConsultationController::class, 'complete'])->name('admin.consultations.complete');
+});
 require __DIR__.'/auth.php';
