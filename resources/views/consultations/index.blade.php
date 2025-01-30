@@ -89,16 +89,17 @@
                             <div class="py-4">
                                 <div class="flex items-center justify-between">
                                     <div>
+                                    <p class="text-sm font-medium text-gray-900">
+                                        Consultation : {{ ucfirst($consultation->type) }}
+                                    </p>
+                                    <p class="text-sm text-gray-500">
+                                        Date : 
                                         @if($consultation->scheduled_at)
-                                            <p class="text-sm font-medium text-gray-900">
                                             {{ \Carbon\Carbon::parse($consultation->scheduled_at)->format('d/m/Y à H:i') }}
-                                            </p>
                                         @else
-                                            <p class="text-sm font-medium text-gray-500">Date non programmée</p>
+                                            Non programmée
                                         @endif
-                                        <p class="mt-1 text-sm text-gray-500">
-                                            Type: {{ ucfirst($consultation->type) }}
-                                        </p>
+                                    </p>
                                     </div>
                                     <div class="flex items-center space-x-4">
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium

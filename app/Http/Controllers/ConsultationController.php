@@ -80,6 +80,7 @@ class ConsultationController extends Controller
                 'status' => 'pending',
             ]);
             
+            
             // Créer une facture PayDunya
             $amount = 500.00; // Montant fixe pour l'exemple
             $description = "Paiement pour consultation";
@@ -179,26 +180,32 @@ class ConsultationController extends Controller
     /**
      * Trouver le prochain créneau disponible.
      */
-    private function getNextAvailableSlot($requestedDate)
-    {
-        $currentDate = Carbon::parse($requestedDate);
-        $startHour = 20; // Heure de début des consultations
-        $endHour = 24; // Heure de fin des consultations
-        $maxConsultationsPerDay = 10; // Nombre maximal de consultations par jour
+    /**
+ * Trouver le prochain créneau disponible.
+ */
+private function getNextAvailableSlot($requestedDate)
+{
+    $currentDate = Carbon::parse($requestedDate)->startOfDay();
+    $startHour = 20; // Début des consultations (20h00)
+    $maxConsultationsPerDay = 10; // Nombre max de consultations par jour
+    $consultationDuration = 25; // Durée de chaque consultation en minutes
 
-        while (true) {
-            if ($currentDate->isWeekday()) {
-                // Vérifier combien de consultations sont déjà planifiées pour cette journée
-                $dailyCount = Consultation::whereDate('scheduled_at', $currentDate->toDateString())->count();
+    while (true) {
+        // Vérifier si c'est un jour ouvrable (lundi à vendredi)
+        if ($currentDate->isWeekday()) {
+            $consultationsCount = Consultation::whereDate('scheduled_at', $currentDate->toDateString())->count();
 
-                if ($dailyCount < $maxConsultationsPerDay) {
-                    $slotTime = $startHour + $dailyCount;
-                    if ($slotTime < $endHour) {
-                        return $currentDate->setTime($slotTime, 0);
-                    }
-                }
+            if ($consultationsCount < $maxConsultationsPerDay) {
+                // Calcul du prochain créneau basé sur les consultations déjà planifiées
+                $slotTime = Carbon::createFromTime($startHour, 0)->addMinutes($consultationsCount * $consultationDuration);
+
+                return $currentDate->setTimeFromTimeString($slotTime->format('H:i'));
             }
-            $currentDate->addDay();
         }
+
+        // Passer au jour suivant si la journée est déjà pleine
+        $currentDate->addDay();
     }
+}
+
 }
