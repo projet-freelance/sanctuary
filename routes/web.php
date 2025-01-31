@@ -18,6 +18,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Gate;
 use Aimeos\Shop\Base\Support;
+use App\Http\Controllers\SiteStatsController;
 
 /*
 |----------------------------------------------------------------------
@@ -35,6 +36,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/site-stats', [SiteStatsController::class, 'index'])->name('site-stats');
 
 Route::get('/bible_videos', [BibleVideoController::class, 'index'])->name('biblevideos.index');
 Route::get('/bible_videos/{id}', [BibleVideoController::class, 'show'])->name('biblevideos.show');

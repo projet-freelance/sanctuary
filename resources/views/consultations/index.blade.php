@@ -71,10 +71,7 @@
                     'title' => 'Prière et Intercession',
                     'description' => 'Moment de prière partagée pour vos intentions particulières'
                 ],
-                [
-                    'title' => 'Confession',
-                    'description' => 'Espace confidentiel pour le sacrement de réconciliation'
-                ]
+                
             ] as $consultation)
             <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
                 <div class="flex items-center space-x-6">

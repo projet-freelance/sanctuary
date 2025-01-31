@@ -37,35 +37,6 @@
                     </div>
                     @endif
 
-                    <!-- Historique des paiements -->
-                    <div>
-                        <h2 class="text-lg font-medium text-purple-900">Historique des Paiements</h2>
-
-                        @if($consultation->paiements->isEmpty())
-                            <p class="text-gray-600">Aucun paiement effectué pour cette consultation.</p>
-                        @else
-                            <ul class="space-y-4">
-                                @foreach($consultation->paiements as $payment)
-                                    <li class="flex justify-between items-center p-4 border border-gray-200 rounded-lg">
-                                        <div class="flex flex-col">
-                                            <span class="text-gray-700 font-medium">Montant : {{ $payment->amount }} €</span>
-                                            <span class="text-sm text-gray-500">Transaction ID : {{ $payment->transaction_id }}</span>
-                                            <span class="text-sm text-gray-500">Méthode de paiement : {{ ucfirst($payment->payment_method) }}</span>
-                                            <span class="text-sm text-gray-500">Date : {{ \Carbon\Carbon::parse($payment->created_at)->format('d M Y, H:i') }}</span>
-                                        </div>
-                                        <div>
-                                            <span class="px-4 py-2 text-white text-sm rounded-full 
-                                            @if($payment->status == 'successful') bg-green-500 @elseif($payment->status == 'failed') bg-red-500 @else bg-yellow-500 @endif">
-                                                {{ ucfirst($payment->status) }}
-                                            </span>
-                                        </div>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        @endif
-                    </div>
-                </div>
-
                 <div class="mt-8 text-center">
                     <a href="{{ route('consultations.index') }}" 
                        class="text-lg font-medium text-purple-700 hover:text-purple-800">
