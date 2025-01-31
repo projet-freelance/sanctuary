@@ -9,6 +9,8 @@ class Payment extends Model
 {
     use HasFactory;
 
+    
+
     // Définir les propriétés de la table (si la table a des colonnes spécifiques)
     protected $fillable = [
         'user_id',
@@ -27,6 +29,8 @@ class Payment extends Model
     {
         return $this->belongsTo(Consultation::class);
     }
+
+    
 
     /**
      * Définir la relation avec le modèle User.

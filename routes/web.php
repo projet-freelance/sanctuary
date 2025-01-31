@@ -14,7 +14,8 @@ use App\Http\Controllers\RadioController;
 use App\Http\Controllers\ConsultationController;
 use App\Http\Controllers\AdminConsultationController;
 use App\Http\Controllers\EventController;
-
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Gate;
 use Aimeos\Shop\Base\Support;
 
@@ -138,5 +139,23 @@ Route::post('/events/{id}/purchase', [EventController::class, 'purchase'])->name
 Route::prefix('admin/consultations')->middleware('aimeos.admin')->group(function () {
     Route::get('/', [AdminConsultationController::class, 'index'])->name('admin.consultations.index');
     Route::post('/complete/{id}', [AdminConsultationController::class, 'complete'])->name('admin.consultations.complete');
+});
+
+
+Route::middleware('auth')->group(function () {
+    Route::get('/products', [OrderController::class, 'index'])->name('products.index');
+    Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
+    Route::post('/payments/{order}', [OrderController::class, 'makePayment'])->name('payments.make');
+});
+
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+
+
+Route::middleware('auth')->group(function () {
+    Route::get('/products', [OrderController::class, 'index'])->name('products.index');
+    Route::get('/orders/create/{product}', [OrderController::class, 'create'])->name('orders.create');
+    Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
+    Route::get('/payments/{order}', [OrderController::class, 'showPaymentForm'])->name('payments.create');
+    Route::post('/payments/{order}', [OrderController::class, 'makePayment'])->name('payments.make');
 });
 require __DIR__.'/auth.php';

@@ -1,32 +1,23 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="min-h-screen bg-white flex flex-col">
+<div class="container">
+    <h1 class="my-4">Nos Produits</h1>
 
-    <!-- Contenu principal -->
-    <div class="container mx-auto p-6 flex-grow">
-        <h1 class="text-3xl font-bold text-center  mb-6">Liste des Produits</h1>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            @foreach ($products as $product)
-                <div class="bg-white border rounded-lg shadow-lg overflow-hidden">
-                    <img src="{{ asset('storage/' . $product->image_path) }}" alt="{{ $product->name }}" class="w-full h-56 object-cover">
-
-                    <div class="p-4">
-                        <h5 class="text-xl font-semibold text-gray-800">{{ $product->name }}</h5>
-                        <p class="text-sm text-gray-600 mb-4">{{ Str::limit($product->description, 100) }}</p>
-                        <p class="text-lg font-bold text-gray-800">€{{ number_format($product->price, 2) }}</p>
-
-                        <a href="{{ route('products.show', $product) }}" class="mt-4 inline-block bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
-                            Voir le produit
-                        </a>
+    <div class="row">
+        @foreach ($products as $product)
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="{{ asset('storage/' . $product->image_path) }}" class="card-img-top" alt="{{ $product->title }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $product->title }}</h5>
+                        <p class="card-text">{{ $product->description }}</p>
+                        <p class="card-text"><strong>Prix : {{ $product->price }} €</strong></p>
+                        <a href="{{ route('orders.create', $product) }}" class="btn btn-primary">Commander</a>
                     </div>
                 </div>
-            @endforeach
-        </div>
+            </div>
+        @endforeach
     </div>
-
-    
-
 </div>
 @endsection

@@ -42,6 +42,12 @@ class Consultation extends Model
         return $this->hasMany(Payment::class);
     }
 
+    public function payments()
+{
+    return $this->hasMany(Payment::class);
+}
+
+
     /**
      * Scopes for pending consultations.
      */

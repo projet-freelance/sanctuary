@@ -29,12 +29,7 @@ class User extends Authenticatable
     ];
 
     // Méthode pour récupérer les rôles de l'utilisateur
-    public function getRoles()
-    {
-        // Si vous utilisez Aimeos pour les groupes, récupérez-les ici
-        $context = app('aimeos.context')->get(false);
-        return $context->getGroups();
-    }
+   
 
     // Relations
     public function testimonies() 
@@ -51,6 +46,7 @@ class User extends Authenticatable
     { 
         return $this->hasMany(Order::class); 
     }
+    
 
     public function gameScores() 
     { 
@@ -62,11 +58,7 @@ class User extends Authenticatable
         return $this->belongsToMany(Saint::class, 'user_saint_favourites'); 
     }
 
-    // Vérifier si l'utilisateur est un administrateur
-    public function isAdmin()
-    {
-        return $this->role === 'admin';
-    }
+    
 
     // Vérifier si l'utilisateur est un éditeur
     public function isEditor()
@@ -81,12 +73,6 @@ class User extends Authenticatable
         $this->save();
     }
 
-    // Assigner un rôle à l'utilisateur (admin ou editor)
-    public function assignRole($role)
-    {
-        if (in_array($role, ['admin', 'editor'])) {
-            $this->role = $role;
-            $this->save();
-        }
-    }
+    
+    
 }

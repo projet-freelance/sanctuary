@@ -7,9 +7,9 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "aimeos/aimeos-laravel": "^2024.10",
         "aloha/twilio": "^3.0",
         "astrotomic/laravel-translatable": "*",
+        "filament/filament": "^3.2",
         "get-stream/stream-chat": "^3.7",
         "laravel-notification-channels/twilio": "^4.0",
         "laravel/breeze": "*",
@@ -46,15 +46,13 @@
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi"
-           
+            "@php artisan package:discover --ansi",
+            "@php artisan filament:upgrade"
         ],
         "post-update-cmd": [
-         
-             "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
             "@php artisan vendor:publish --tag=public --ansi",
             "\\Aimeos\\Shop\\Composer::join"
-           
         ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""

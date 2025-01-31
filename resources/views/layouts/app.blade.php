@@ -9,12 +9,15 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <script src="https://code.responsivevoice.org/responsivevoice.js?key=auXJwGAn"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    @filamentStyles
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 
     @livewireStyles
 <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 @livewireScripts
+
 </head>
 
 <body class="font-sans antialiased bg-gray-50">
@@ -108,7 +111,7 @@
                                     <a href="{{ route('testimonies.index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md flex items-center">
                                         <i class="fas fa-comment-dots mr-2"></i>Témoignages
                                     </a>
-                                    <a href="{{ route('aimeos_home') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md flex items-center">
+                                    <a href="{{ route('products.index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md flex items-center">
                                         <i class="fas fa-shopping-cart mr-2"></i>Produits
                                     </a>
                                 @endauth
@@ -262,7 +265,7 @@
                         <a href="{{ route('testimonies.index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md">
                             <i class="fas fa-comment-dots mr-2"></i>Témoignages
                         </a>
-                        <a href="{{ route('aimeos_home') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md">
+                        <a href="{{ route('products.index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md">
                             <i class="fas fa-shopping-cart mr-2"></i>Produits
                         </a>
                     @endauth
@@ -293,5 +296,8 @@
 
     <script src="{{ mix('js/app.js') }}"></script>
     @livewireScripts
+    @filamentScripts
+     @vite('resources/js/app.js')
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

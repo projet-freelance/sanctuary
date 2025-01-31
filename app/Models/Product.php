@@ -7,14 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'name', 
         'description', 
         'price', 
-        'category',  // objet religieux, livre, médaille
+        'category',
         'stock',
         'image_path',
-        'discount_percentage'
+        'discount_percentage',
+        'status',
+        'title',
     ];
 
     public function orders() 
