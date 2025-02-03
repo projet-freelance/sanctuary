@@ -29,7 +29,6 @@ class ProductResource extends Resource
         return $form
             ->schema([
                 TextInput::make('name')->required(),
-                TextInput::make('title')->required(),
                 FileUpload::make('image')->image()->required(),
                 TextInput::make('price')->numeric()->required(),
                 Textarea::make('description'),
@@ -47,7 +46,7 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('title')->sortable(),
+               
                 ImageColumn::make('image'),
                 TextColumn::make('price')->sortable(),
                 TextColumn::make('category')->sortable(),

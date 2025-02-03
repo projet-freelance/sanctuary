@@ -20,6 +20,10 @@ class OrderController extends Controller
         return view('products.index', compact('categories'));
     }
 
+    public function show(Product $product) {
+        return view('products.show', compact('product'));
+    }
+
     // Méthode pour afficher le formulaire de paiement pour une commande
     public function showPaymentForm(Order $order) {
         // Retourner la vue avec la commande

@@ -21,6 +21,9 @@ class Payment extends Model
         'payment_method',
     ];
 
+    
+   
+
     /**
      * Définir la relation avec le modèle Consultation.
      * Un paiement appartient à une consultation.
@@ -28,6 +31,11 @@ class Payment extends Model
     public function consultation()
     {
         return $this->belongsTo(Consultation::class);
+    }
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
     }
 
     

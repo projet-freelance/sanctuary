@@ -15,11 +15,16 @@ class Product extends Model
         'price', 
         'category',
         'stock',
-        'image_path',
+        'image',
         'discount_percentage',
         'status',
-        'title',
+        
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 
     public function orders() 
     { 

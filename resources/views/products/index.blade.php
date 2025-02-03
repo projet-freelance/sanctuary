@@ -1,23 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <h1 class="my-4">Nos Produits</h1>
-
-    <div class="row">
-        @foreach ($products as $product)
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <img src="{{ asset('storage/' . $product->image_path) }}" class="card-img-top" alt="{{ $product->title }}">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ $product->title }}</h5>
-                        <p class="card-text">{{ $product->description }}</p>
-                        <p class="card-text"><strong>Prix : {{ $product->price }} €</strong></p>
-                        <a href="{{ route('orders.create', $product) }}" class="btn btn-primary">Commander</a>
-                    </div>
-                </div>
+    <div class="min-h-screen flex flex-col bg-gray-100">
+        <div class="container mx-auto p-6 flex-grow">
+            <h1 class="text-3xl font-bold text-center mb-6">Nos Produits</h1>
+            
+            <!-- Vue.js application -->
+            <div id="app">
+                <product-list></product-list>
             </div>
-        @endforeach
+        </div>
     </div>
-</div>
 @endsection

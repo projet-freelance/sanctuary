@@ -2,7 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\StreamChatController;
+use App\Http\Controllers\ProductController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -14,9 +15,10 @@ use App\Http\Controllers\StreamChatController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/stream-chat/token', [StreamChatController::class, 'getToken']);
-
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+Route::get('/products', [ProductController::class, 'index']);

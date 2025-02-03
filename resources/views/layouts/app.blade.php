@@ -11,7 +11,7 @@
     <script src="https://code.responsivevoice.org/responsivevoice.js?key=auXJwGAn"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     @filamentStyles
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.jsx'])
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 
     @livewireStyles
