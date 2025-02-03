@@ -1,61 +1,64 @@
+<!-- resources/views/events/show.blade.php -->
 @extends('layouts.app')
 
 @section('content')
-<div class="min-h-screen bg-gradient-to-b from-purple-50 to-white">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="bg-white rounded-xl shadow-xl p-8">
-            <!-- Titre de l'événement -->
-            <h1 class="text-3xl font-bold mb-6 text-purple-900">{{ $event->title }}</h1>
+<div class="container mx-auto px-4">
+    <div class="md:flex -mx-4">
+        <div class="md:w-1/2 px-4">
+            <img src="{{ asset('storage/' . $event->image) }}" 
+                 alt="{{ $event->name }}" 
+                 class="rounded-lg shadow-lg w-full h-96 object-cover">
+        </div>
+        
+        <div class="md:w-1/2 px-4">
+            <h1 class="text-3xl font-bold mb-4">{{ $event->name }}</h1>
             
-            <!-- Dates et lieu de l'événement -->
-            <div class="space-y-4">
-                <div class="flex items-center text-sm text-gray-600">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
-                    <span>
-                        {{ \Carbon\Carbon::parse($event->start_date)->format('d/m/Y H:i') }} - 
-                        {{ \Carbon\Carbon::parse($event->end_date)->format('d/m/Y H:i') }}
-                    </span>
-                </div>
-                <div class="flex items-center text-sm text-gray-600">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                    </svg>
-                    <span>{{ $event->location }}</span>
-                </div>
+            <div class="mb-4">
+                <p class="text-gray-700">{{ $event->description }}</p>
             </div>
+            
+            <div class="mb-4">
+                <h2 class="font-semibold">Détails</h2>
+                <ul class="space-y-2">
+                    <li>
+                        <i class="fas fa-calendar text-blue-500"></i>
+                        {{ $event->date_time ? \Carbon\Carbon::parse($event->date_time)->format('d/m/Y H:i') : 'Date non définie' }}
 
-            <!-- Description de l'événement -->
-            <div class="mt-8">
-                <h2 class="text-xl font-semibold mb-4 text-purple-900">Description de l'Événement</h2>
-                <p class="text-gray-600">{{ $event->description }}</p>
+                    </li>
+                    <li>
+                        <i class="fas fa-map-marker-alt text-red-500"></i>
+                        {{ $event->location }}
+                    </li>
+                    <li>
+                        <i class="fas fa-ticket-alt text-green-500"></i>
+                        {{ number_format($event->ticket_price, 2) }} €
+                    </li>
+                </ul>
             </div>
-
-            <!-- Formulaire d'achat de tickets -->
-            <div class="mt-8">
-                <h2 class="text-xl font-semibold mb-4 text-purple-900">Acheter un Ticket</h2>
-                <form action="{{ route('events.purchase', $event->id) }}" method="POST">
-                    @csrf
-                    <div class="space-y-4">
-                        <!-- Champ pour le nombre de tickets -->
-                        <div>
-                            <label for="quantity" class="block text-sm font-medium text-gray-700">Nombre de tickets</label>
-                            <input type="number" id="quantity" name="quantity" min="1" max="5" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500">
+            
+            <div class="mb-4">
+                @if($event->hasAvailableSeats())
+                    <form action="{{ route('events.purchase', $event->id) }}" method="POST">
+                        @csrf
+                        <div class="mb-4">
+                            <label for="quantity" class="block mb-2">Nombre de places</label>
+                            <select name="quantity" id="quantity" class="w-full rounded border p-2">
+                                @for($i = 1; $i <= min(10, $event->available_seats); $i++)
+                                    <option value="{{ $i }}">{{ $i }}</option>
+                                @endfor
+                            </select>
                         </div>
-                        <!-- Bouton d'achat -->
-                        <div>
-                            <button type="submit" 
-                                class="inline-flex items-center px-6 py-2 border border-transparent rounded-full text-sm font-medium text-white bg-purple-700 hover:bg-purple-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 shadow-lg">
-                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
-                                </svg>
-                                Acheter maintenant
-                            </button>
-                        </div>
+                        
+                        <button type="submit" 
+                                class="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600">
+                            Acheter des billets
+                        </button>
+                    </form>
+                @else
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                        Désolé, cet événement est complet.
                     </div>
-                </form>
+                @endif
             </div>
         </div>
     </div>

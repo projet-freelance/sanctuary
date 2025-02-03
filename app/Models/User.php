@@ -29,7 +29,10 @@ class User extends Authenticatable
     ];
 
     // Méthode pour récupérer les rôles de l'utilisateur
-   
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class);
+    }
 
     // Relations
     public function testimonies() 

@@ -18,6 +18,8 @@ use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Gate;
 use Aimeos\Shop\Base\Support;
 use App\Http\Controllers\SiteStatsController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\TicketController;
 
 /*
 |----------------------------------------------------------------------
@@ -131,11 +133,17 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware('auth')->get('/consultations/{id}', [ConsultationController::class, 'show'])->name('consultations.show');
 
-Route::get('/events/{id}', [EventController::class, 'show'])->name('events.show');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/events', [EventController::class, 'index'])->name('events.index');
+    Route::get('/events/{id}', [EventController::class, 'show'])->name('events.show');
 
-Route::post('/events/{id}/purchase', [EventController::class, 'purchase'])->name('events.purchase');
+    Route::get('/events/{event}/pay', [PaymentController::class, 'pay'])->name('payment.pay');
+    Route::get('/payment/success', [PaymentController::class, 'success'])->name('payment.success');
+    Route::get('/payment/cancel', [PaymentController::class, 'cancel'])->name('payment.cancel');
 
-
+    Route::get('/tickets/{ticket}', [TicketController::class, 'show'])->name('tickets.show');
+    Route::get('/tickets/{ticket}/download', [TicketController::class, 'download'])->name('tickets.download');
+});
 
 Route::get('/products', function () {
     return view('products');

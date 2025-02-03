@@ -114,6 +114,9 @@
                                     <a href="{{ route('products.index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md flex items-center">
                                         <i class="fas fa-shopping-cart mr-2"></i>Produits
                                     </a>
+                                    <a href="{{ route('events.index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md flex items-center">
+                                        <i class="fas fa-shopping-cart mr-2"></i>Event
+                                    </a>
                                 @endauth
                             </div>
                         </div>
@@ -268,6 +271,9 @@
                         <a href="{{ route('products.index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md">
                             <i class="fas fa-shopping-cart mr-2"></i>Produits
                         </a>
+                        <a href="{{ route('events.index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md flex items-center">
+                                        <i class="fas fa-shopping-cart mr-2"></i>Event
+                                    </a>
                     @endauth
                 </div>
             </div>
