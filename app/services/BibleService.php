@@ -220,4 +220,37 @@ class BibleService
         
         return $bookChapters[$book] ?? 0;
     }
+
+
+    public function getDailyVerses($count = 5)
+{
+    $books = array_keys($this->bookMappings);
+    $verses = [];
+
+    for ($i = 0; $i < $count; $i++) {
+        // Sélectionner un livre aléatoire
+        $book = $books[array_rand($books)];
+        $chaptersCount = $this->getChaptersCount($book);
+
+        if ($chaptersCount > 0) {
+            // Sélectionner un chapitre aléatoire
+            $chapter = rand(1, $chaptersCount);
+
+            // Récupérer le contenu du chapitre
+            $chapterData = $this->getChapter($book, $chapter);
+
+            if (!empty($chapterData['verses'])) {
+                // Sélectionner un verset aléatoire dans le chapitre
+                $verseNumber = array_rand($chapterData['verses']);
+                $verses[] = [
+                    'reference' => "{$book} {$chapter}:{$verseNumber}",
+                    'text' => $chapterData['verses'][$verseNumber]
+                ];
+            }
+        }
+    }
+
+    return $verses;
+}
+
 }

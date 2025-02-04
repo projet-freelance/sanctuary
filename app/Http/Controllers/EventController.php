@@ -8,12 +8,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-
-
-
-
-
-
 class EventController extends Controller
 {
     /**
@@ -54,49 +48,18 @@ class EventController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function purchase(Request $request, Event $event)
-    {
-        // Valider les données de la requête
-        $request->validate([
-            'quantity' => 'required|integer|min:1|max:10', // Limite à 10 tickets par achat
-        ]);
+{
+    $request->validate([
+        'quantity' => 'required|integer|min:1|max:10',
+    ]);
 
-        // Vérifier si l'utilisateur est connecté
-        if (!auth()->check()) {
-            return redirect()->route('login')->with('error', 'Veuillez vous connecter pour acheter des tickets.');
-        }
-
-        // Vérifier si suffisamment de tickets sont disponibles
-        if ($event->available_tickets < $request->quantity) {
-            return redirect()->back()->with('error', 'Désolé, il ne reste pas assez de tickets disponibles.');
-        }
-
-        // Démarrer une transaction pour garantir l'intégrité des données
-        DB::beginTransaction();
-        try {
-            // Mettre à jour le nombre de tickets disponibles
-            $event->available_tickets -= $request->quantity;
-            $event->save();
-
-            // Enregistrer l'achat dans la table `tickets`
-            $ticket = new Ticket([
-                'event_id' => $event->id,
-                'user_id' => auth()->id(), // ID de l'utilisateur connecté
-                'quantity' => $request->quantity,
-            ]);
-            $ticket->save();
-
-            // Valider la transaction
-            DB::commit();
-
-            // Rediriger avec un message de succès
-            return redirect()->route('events.show', $event->id)->with('success', 'Votre ticket a été acheté avec succès !');
-        } catch (\Exception $e) {
-            // Annuler la transaction en cas d'erreur
-            DB::rollBack();
-            // Loguer l'erreur pour le débogage
-            Log::error('Échec de l\'achat du ticket : ' . $e->getMessage());
-            // Rediriger avec un message d'erreur
-            return redirect()->back()->with('error', 'Une erreur s\'est produite lors de l\'achat. Veuillez réessayer.');
-        }
+    // Vérifiez si suffisamment de tickets sont disponibles
+    if ($event->available_seats < $request->quantity) {
+        return redirect()->back()->with('error', 'Désolé, il ne reste pas assez de tickets disponibles.');
     }
+
+    // Redirigez vers le PaymentController pour le paiement
+    return redirect()->action([PaymentController::class, 'pay'], ['event' => $event->id])->withInput();
+}
+
 }
