@@ -136,6 +136,8 @@ Route::middleware('auth')->get('/consultations/{id}', [ConsultationController::c
 Route::middleware(['auth'])->group(function () {
     Route::get('/events', [EventController::class, 'index'])->name('events.index');
     Route::get('/events/{id}', [EventController::class, 'show'])->name('events.show');
+    Route::post('/events/{event}/purchase', [EventController::class, 'purchase'])
+    ->name('events.purchase');
 
     Route::get('/events/{event}/pay', [PaymentController::class, 'pay'])->name('payment.pay');
     Route::get('/payment/success', [PaymentController::class, 'success'])->name('payment.success');

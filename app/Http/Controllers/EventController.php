@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
+
+
+
+
+
+
 class EventController extends Controller
 {
     /**
@@ -32,14 +38,13 @@ class EventController extends Controller
      * @param Event $event
      * @return \Illuminate\View\View
      */
-    public function show(Event $event)
-    {
-        // Charger les relations nécessaires (exemple : tickets, organisateur)
-        $event->load('tickets');
+    public function show($id)
+{
+    $event = Event::findOrFail($id); // 🔍 Forcer la récupération de l'événement
+    
+    return view('events.show', compact('event'));
+}
 
-        // Retourner la vue `events.show` avec les détails de l'événement
-        return view('events.show', compact('event'));
-    }
 
     /**
      * Traite l'achat de tickets pour un événement.
