@@ -21,6 +21,7 @@
         "paydunya/paydunya": "^1.0",
         "simplesoftwareio/simple-qrcode": "*",
         "spatie/laravel-medialibrary": "^11.12",
+        "stichoza/google-translate-php": "^5.2",
         "twilio/sdk": "^8.3"
     },
     "require-dev": {
