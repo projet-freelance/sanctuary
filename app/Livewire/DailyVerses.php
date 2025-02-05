@@ -38,6 +38,7 @@ class DailyVerses extends Component
         $this->isComplete = false;
     }
 
+
     public function render()
     {
         return view('livewire.dailyverses');
