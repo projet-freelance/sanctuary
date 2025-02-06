@@ -83,6 +83,10 @@ return [
     | Livewire's standard 200ms delay.
     |
     */
+    'resources' => [
+    \App\Filament\Resources\UserResource::class,
+    // Ajoutez d'autres ressources ici
+],
 
     'livewire_loading_delay' => 'default',
 

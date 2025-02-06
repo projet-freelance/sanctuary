@@ -6,7 +6,6 @@ use App\Http\Controllers\PrayerController;
 use App\Http\Controllers\TestimonyController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
-use APP\Http\Controllers\PrayerIntentionController;
 use App\Http\Controllers\BibleVideoController;
 use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\TeachingController;
@@ -95,11 +94,13 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::resource('prayers', PrayerController::class);
+Route::get('/prayers', [PrayerController::class, 'index'])->name('prayers.index');
 Route::post('/prayers', [PrayerController::class, 'store'])->name('prayer.store');
+// Afficher la prière spécifique
+Route::get('/prayers/{prayer}', [PrayerController::class, 'show'])->name('prayers.show');
 
-Route::get('/prayerintention', [PrayerIntentionController::class, 'create'])->name('prayer_intentions.create');
-Route::post('/prayerintention', [PrayerController::class, 'store'])->name('prayer.store');
-Route::post('/twilio/receive', [PrayerIntentionController::class, 'receiveSms']);
+// Afficher le formulaire de création
+Route::get('/prayers/create', [PrayerController::class, 'create'])->name('prayers.create');
 
 
 

@@ -162,16 +162,15 @@
         <h2 class="text-3xl font-bold text-purple-800 text-center mb-12">Nos Services</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             @php
-    $services = [
-        ['icon' => 'fas fa-bible', 'title' => 'Versets Bibliques', 'description' => 'Texte et audio disponibles', 'route' => route('bible.index')],
-        ['icon' => 'fas fa-heart', 'title' => 'Témoignages', 'description' => 'Partagez votre histoire', 'route' => route('temoignages')],
-        ['icon' => 'fas fa-pray', 'title' => 'Intention de prière', 'description' => 'SMS ou note vocale', 'route' => route('prayer_intentions.create')],
-        ['icon' => 'fas fa-brain', 'title' => 'Exercice spirituel', 'description' => 'Vertus et dons de l\'Esprit', 'route' => route('dashboard')],
-        ['icon' => 'fas fa-angel', 'title' => 'Saint intercesseur', 'description' => 'Découvrez votre saint protecteur', 'route' => route('dashboard')],
-        ['icon' => 'fas fa-store', 'title' => 'Store', 'description' => 'Objets de piété et plus', 'route' => route('products.index')],
-    ];
-@endphp
-
+                $services = [
+                    ['icon' => 'fas fa-bible', 'title' => 'Versets Bibliques', 'description' => 'Texte et audio disponibles', 'route' => 'bible.index'],
+                    ['icon' => 'fas fa-heart', 'title' => 'Témoignages', 'description' => 'Partagez votre histoire', 'route' => 'temoignages'],
+                    ['icon' => 'fas fa-pray', 'title' => 'Intention de prière', 'description' => 'SMS ou note vocale', 'route' => 'prayer_intentions.create'],
+                    ['icon' => 'fas fa-brain', 'title' => 'Exercice spirituel', 'description' => 'Vertus et dons de l\'Esprit', 'route' => 'dashboard'],
+                    ['icon' => 'fas fa-angel', 'title' => 'Saint intercesseur', 'description' => 'Découvrez votre saint protecteur', 'route' => 'dashboard'],
+                    ['icon' => 'fas fa-store', 'title' => 'Store', 'description' => 'Objets de piété et plus', 'route' => 'products.index'],
+                ];
+            @endphp
 
             @foreach ($services as $service)
                 <a href="{{ auth()->check() ? route($service['route']) : route('login') }}" class="block">
@@ -200,8 +199,8 @@
             @php
                 $features = [
                     ['image' => 'bible.jpg', 'title' => 'Contenu Biblique', 'description' => 'Accédez à des versets et histoires bibliques', 'route' => 'versets'],
-                    ['image' => 'prayer1.jpg', 'title' => 'Prières', 'description' => 'Partagez vos intentions de prière', 'route' => 'prieres'],
-                    ['image' => 'jesus.jpg', 'title' => 'Enseignements', 'description' => 'Découvrez nos ressources spirituelles', 'route' => 'enseignements'],
+                    ['image' => 'prayer1.jpg', 'title' => 'Prières', 'description' => 'Partagez vos intentions de prière', 'route' => 'prayers.index'],
+                    ['image' => 'jesus.jpg', 'title' => 'Enseignements', 'description' => 'Découvrez nos ressources spirituelles', 'route' => 'teachings.index'],
                 ];
             @endphp
 
@@ -221,7 +220,6 @@
         </div>
     </div>
 </section>
-
 
 
 
