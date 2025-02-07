@@ -164,8 +164,8 @@
             @php
                 $services = [
                     ['icon' => 'fas fa-bible', 'title' => 'Versets Bibliques', 'description' => 'Texte et audio disponibles', 'route' => 'bible.index'],
-                    ['icon' => 'fas fa-heart', 'title' => 'Témoignages', 'description' => 'Partagez votre histoire', 'route' => 'temoignages'],
-                    ['icon' => 'fas fa-pray', 'title' => 'Intention de prière', 'description' => 'SMS ou note vocale', 'route' => 'prayer_intentions.create'],
+                    ['icon' => 'fas fa-heart', 'title' => 'Témoignages', 'description' => 'Partagez votre histoire', 'route' => 'testimonies.index'],
+                    ['icon' => 'fas fa-pray', 'title' => 'Intention de prière', 'description' => 'SMS ou note vocale', 'route' => 'prayers.create'],
                     ['icon' => 'fas fa-brain', 'title' => 'Exercice spirituel', 'description' => 'Vertus et dons de l\'Esprit', 'route' => 'dashboard'],
                     ['icon' => 'fas fa-angel', 'title' => 'Saint intercesseur', 'description' => 'Découvrez votre saint protecteur', 'route' => 'dashboard'],
                     ['icon' => 'fas fa-store', 'title' => 'Store', 'description' => 'Objets de piété et plus', 'route' => 'products.index'],
@@ -228,7 +228,7 @@
         <div class="container mx-auto px-4 text-center">
             <h2 class="text-3xl font-bold mb-8 text-white">Témoignages</h2>
             <p class="text-lg mb-8 text-white">Découvrez les récits inspirants de notre communauté</p>
-            <a href="/temoignages" class="bg-white text-purple-800 hover:bg-gray-100 py-3 px-8 rounded-full text-lg transition duration-300">
+            <a href="/testimonies" class="bg-white text-purple-800 hover:bg-gray-100 py-3 px-8 rounded-full text-lg transition duration-300">
                 Voir les témoignages
             </a>
         </div>

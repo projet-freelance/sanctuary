@@ -10,6 +10,7 @@ use App\Http\Controllers\BibleVideoController;
 use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\TeachingController;
 use App\Http\Controllers\RadioController;
+
 use App\Http\Controllers\ConsultationController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\OrderController;
@@ -84,6 +85,10 @@ Route::get('/bible/show', [BibleController::class, 'showChapter'])->name('bible.
 Route::resource('prayers', PrayerController::class)->middleware('auth');
 Route::resource('testimonies', TestimonyController::class)->middleware('auth');
 
+Route::get('/testimonies', [TestimonyController::class, 'index'])->name('testimonies.index');
+
+// Afficher le formulaire de création d'un témoignage
+Route::get('/testimonies/create', [TestimonyController::class, 'create'])->name('testimonies.create');
 
 
 // Routes pour le profil utilisateur
