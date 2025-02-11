@@ -165,16 +165,18 @@ Route::get('/products', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/products', [OrderController::class, 'index'])->name('products.index');
-    Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
+   
     Route::post('/payments/{order}', [OrderController::class, 'makePayment'])->name('payments.make');
 });
 Route::get('/products', [OrderController::class, 'index'])->name('products.index');
+Route::get('/products/{id}', [OrderController::class, 'show'])->name('products.show');
+Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
+Route::get('/orders/confirm/{id}', [OrderController::class, 'confirm'])->name('orders.confirm');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/products', [OrderController::class, 'index'])->name('products.index');
-    Route::get('/orders/create/{product}', [OrderController::class, 'create'])->name('orders.create');
+
+Route::middleware(['auth'])->group(function () {
     Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
-    Route::get('/payments/{order}', [OrderController::class, 'showPaymentForm'])->name('payments.create');
-    Route::post('/payments/{order}', [OrderController::class, 'makePayment'])->name('payments.make');
 });
+
+
 require __DIR__.'/auth.php';
