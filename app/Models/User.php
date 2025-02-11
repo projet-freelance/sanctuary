@@ -11,18 +11,10 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+ 
     protected $fillable = [
-        'name', 
-        'email', 
-        'password', 
-        'avatar',
-        'role',  // Ici, nous conservons le champ 'role'
-        'language_preference',
-        'last_login_at',
-        'spiritual_level',
-        'prayer_frequency'
+        'name', 'email', 'password', 'phone', 'country', 'city', 'role', 'birthdate', 'status'
     ];
-
     protected $hidden = [
         'password', 
         'remember_token'

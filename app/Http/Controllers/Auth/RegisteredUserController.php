@@ -27,18 +27,30 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function register(Request $request)
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        // Validation des données du formulaire
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+            'phone' => 'nullable|string|max:32',
+            'country' => 'nullable|string|max:2',
+            'city' => 'nullable|string|max:200',
+            'birthdate' => 'nullable|date',
         ]);
 
+        // Créer un nouvel utilisateur
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'name' => $validatedData['name'],
+            'email' => $validatedData['email'],
+            'password' => Hash::make($validatedData['password']),
+            'phone' => $validatedData['phone'] ?? 'Non spécifié', // Valeur par défaut
+            'country' => $validatedData['country'] ?? 'Non spécifié', // Valeur par défaut
+            'city' => $validatedData['city'] ?? 'Inconnue', // Valeur par défaut
+            'birthdate' => $validatedData['birthdate'] ?? null, // Valeur par défaut
+            'status' => 1, // Par défaut 1 (actif)
+            'role' => 'editor', // Par défaut 'editor'
         ]);
 
         event(new Registered($user));

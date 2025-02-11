@@ -1,5 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-    <x-latest-products :categories="$categories" :products="$products" :selectedCategory="$selectedCategory" />
+    
+            
+            
+            <!-- Vue.js application -->
+            <x-latest-products />
+
+        
 @endsection

@@ -19,7 +19,7 @@
                 <img 
                     src="{{ asset('storage/' . $product->image) }}" 
                     alt="{{ $product->name }}"
-                    class="w-full"
+                    class="w-full h-full object-cover"
                 >
             </div>
 

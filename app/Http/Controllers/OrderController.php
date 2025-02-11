@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Order;
@@ -19,18 +18,13 @@ class OrderController extends Controller
     }
 
     // Méthode pour afficher toutes les catégories et leurs produits
-   public function index(Request $request)
+    public function index()
     {
-        $categories = Category::all();
-        $selectedCategory = $request->input('category', null);
-
-        if ($selectedCategory) {
-            $products = Product::where('category', $selectedCategory)->get();
-        } else {
-            $products = Product::all();
-        }
-
-        return view('products.index', compact('categories', 'products', 'selectedCategory'));
+        // Charger les catégories avec leurs produits associés
+        $categories = Category::with('products')->get();
+        
+        // Retourner la vue avec les catégories
+        return view('products.index', compact('categories'));
     }
 
     public function show($id)
@@ -77,14 +71,41 @@ class OrderController extends Controller
     }
 
     public function confirm(Request $request, $id)
-    {
-        $paymentToken = $request->input('token');
+{
+    $paymentToken = $request->input('token');
 
-        if ($this->paydunya->confirmPayment($paymentToken)) {
-            // Enregistrez l'information de paiement ou faites une autre action nécessaire
-            return redirect()->route('products.show', ['id' => $id])->with('success', 'Paiement réussi pour le premier 50%!');
+    if ($this->paydunya->confirmPayment($paymentToken)) {
+        $product = Product::findOrFail($id);
+        $user = auth()->user(); // Récupérer l'utilisateur connecté
+
+        // Vérifier si la commande existe déjà (évite les doublons)
+        $existingOrder = Order::where('user_id', $user->id)
+            ->where('product_id', $product->id)
+            ->where('status', 'pending')
+            ->first();
+
+        if (!$existingOrder) {
+            // Créer une nouvelle commande après paiement validé
+            $order = new Order();
+            $order->user_id = $user->id;
+            $order->product_id = $product->id;
+            $order->total_price = $product->price;
+            $order->paid_amount = $product->price * 0.5; // 50% payé à l'avance
+            $order->status = 'partially_paid';
+            $order->save();
         } else {
-            return redirect()->route('products.show', ['id' => $id])->withErrors(['msg' => 'Le paiement a échoué.']);
+            // Mise à jour du statut de la commande existante
+            $existingOrder->paid_amount += $product->price * 0.5;
+            $existingOrder->status = 'partially_paid';
+            $existingOrder->save();
         }
+
+        return redirect()->route('products.show', ['id' => $id])
+            ->with('success', 'Paiement réussi ! La commande a été enregistrée.');
+    } else {
+        return redirect()->route('products.show', ['id' => $id])
+            ->withErrors(['msg' => 'Le paiement a échoué.']);
     }
+}
+
 }
