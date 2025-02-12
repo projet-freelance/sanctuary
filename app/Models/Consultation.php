@@ -28,6 +28,7 @@ class Consultation extends Model
     {
         return $this->belongsTo(User::class);
     }
+    
 
     // Dans app/Models/Consultation.php
 
