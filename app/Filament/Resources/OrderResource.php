@@ -5,119 +5,117 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\OrderResource\Pages;
 use App\Models\Order;
 use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Tables\Filters\SelectFilter;
+use Filament\Forms\Components\DatePicker;
+use Filament\Tables\Table;
 
 class OrderResource extends Resource
 {
     protected static ?string $model = Order::class;
-    protected static ?string $navigationIcon = 'heroicon-o-shopping-cart';
 
-    public static function form(Form $form): Form
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    public static function form(Forms\Form $form): Forms\Form
     {
         return $form
             ->schema([
                 Select::make('user_id')
-                    ->relationship('user', 'name')
                     ->label('Utilisateur')
+                    ->relationship('user', 'name')
                     ->required(),
-
                 Select::make('product_id')
-                    ->relationship('product', 'name')
                     ->label('Produit')
+                    ->relationship('product', 'name')
                     ->required(),
-
                 TextInput::make('total_price')
-                    ->numeric()
-                    ->prefix('FCFA')
-                    ->label('Prix total')
+                    ->label('Prix Total')
                     ->required(),
-
                 TextInput::make('paid_amount')
-                    ->numeric()
-                    ->prefix('FCFA')
-                    ->label('Montant payé')
-                    ->default(0),
-
+                    ->label('Montant Payé')
+                    ->required(),
                 Select::make('status')
+                    ->label('Statut')
                     ->options([
                         'pending' => 'En attente',
-                        'partially_paid' => 'Partiellement payé',
-                        'paid' => 'Payé',
                         'delivered' => 'Livré',
                     ])
-                    ->label('Statut')
                     ->required(),
             ]);
     }
 
-    public static function table(Table $table): Table
+    public static function table(Tables\Table $table): Tables\Table
     {
         return $table
-            ->query(Order::query()->latest('created_at'))
             ->columns([
                 TextColumn::make('user.name')
                     ->label('Utilisateur')
                     ->sortable()
                     ->searchable(),
-
+                TextColumn::make('user.email')
+                    ->label('Email')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('user.city')
+                    ->label('Ville')
+                    ->sortable(),
+                TextColumn::make('user.phone')
+                    ->label('Téléphone')
+                    ->sortable(),
+                TextColumn::make('user.birthdate')
+                    ->label('Date de Naissance')
+                    ->date()
+                    ->sortable(),
+                TextColumn::make('user.country')
+                    ->label('Pays')
+                    ->sortable(),
                 TextColumn::make('product.name')
                     ->label('Produit')
                     ->sortable()
                     ->searchable(),
-
                 TextColumn::make('total_price')
-                    ->label('Prix total')
-                    ->formatStateUsing(fn ($state) => number_format($state, 0, ',', ' ') . ' FCFA')
-                    ->sortable(),
-
+                    ->label('Prix Total'),
                 TextColumn::make('paid_amount')
-                    ->label('Montant payé')
-                    ->formatStateUsing(fn ($state) => number_format($state, 0, ',', ' ') . ' FCFA')
-                    ->sortable(),
-
+                    ->label('Montant Payé'),
                 TextColumn::make('status')
                     ->label('Statut')
-                    ->formatStateUsing(fn ($state) => match ($state) {
-                        'pending' => 'En attente',
-                        'partially_paid' => 'Partiellement payé',
-                        'paid' => 'Payé',
-                        'delivered' => 'Livré',
+                    ->formatStateUsing(function ($state) {
+                        return $state === 'delivered' ? '<span style="color:green;">Livré</span>' : $state;
                     })
-                    ->color(fn ($state) => match ($state) {
-                        'pending' => 'warning',
-                        'partially_paid' => 'info',
-                        'paid' => 'success',
-                        'delivered' => 'gray',
-                    })
-                    ->sortable(),
-
+                    ->html(),
                 TextColumn::make('created_at')
-                    ->label('Date de commande')
-                    ->dateTime('d/m/Y H:i')
+                    ->label('Date de la Commande')
                     ->sortable(),
             ])
             ->filters([
-                SelectFilter::make('status')
-                    ->options([
-                        'pending' => 'En attente',
-                        'partially_paid' => 'Partiellement payé',
-                        'paid' => 'Payé',
-                        'delivered' => 'Livré',
-                    ])
-                    ->label('Filtrer par statut'),
+                //
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('validateDelivery')
+                    ->label('Valider la livraison')
+                    ->action(function (Order $record) {
+                        $record->status = 'delivered';
+                        $record->save();
+                    })
+                    ->color('success'),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
             ]);
     }
 
     public static function getRelations(): array
     {
-        return [];
+        return [
+            //
+        ];
     }
 
     public static function getPages(): array

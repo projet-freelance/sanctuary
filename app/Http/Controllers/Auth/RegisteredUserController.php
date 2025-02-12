@@ -27,7 +27,7 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function register(Request $request)
+    public function store(Request $request)
     {
         // Validation des données du formulaire
         $validatedData = $request->validate([
@@ -35,7 +35,7 @@ class RegisteredUserController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'phone' => 'nullable|string|max:32',
-            'country' => 'nullable|string|max:2',
+            'country' => 'nullable|string|max:100',
             'city' => 'nullable|string|max:200',
             'birthdate' => 'nullable|date',
         ]);
