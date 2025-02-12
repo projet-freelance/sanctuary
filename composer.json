@@ -20,7 +20,7 @@
         "nunomaduro/termwind": "^2.0",
         "paydunya/paydunya": "^1.0",
         "simplesoftwareio/simple-qrcode": "^4.2",
-        "spatie/laravel-medialibrary": "^11.12",
+        "spatie/laravel-medialibrary": "*",
         "stichoza/google-translate-php": "^5.2",
         "twilio/sdk": "^8.3"
     },

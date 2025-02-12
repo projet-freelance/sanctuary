@@ -141,9 +141,10 @@
                                     @click.away="userMenuOpen = false"
                                     class="absolute right-0 w-48 mt-2 origin-top-right bg-white rounded-md shadow-lg">
                                     <div class="py-1">
-                                        <div class="px-4 py-2 text-sm text-gray-700">
-                                            {{ Auth::user()->name }}
-                                        </div>
+                                    <a href="{{ route('profile.show', Auth::user()->id) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        {{ Auth::user()->name }}
+                                   </a>
+
                                         <form method="POST" action="{{ route('logout') }}">
                                             @csrf
                                             <button type="submit" class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100">

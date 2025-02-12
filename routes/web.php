@@ -96,7 +96,9 @@ Route::get('/testimonies/create', [TestimonyController::class, 'create'])->name(
 Route::middleware('auth')->group(function () {
     Route::get('/profile/me', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile/me', [ProfileController::class, 'update'])->name('profile.update');
+    
     Route::delete('/profile/me', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile/{id}', [ProfileController::class, 'show'])->name('profile.show');
 });
 
 Route::resource('prayers', PrayerController::class);
