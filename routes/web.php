@@ -10,7 +10,8 @@ use App\Http\Controllers\BibleVideoController;
 use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\TeachingController;
 use App\Http\Controllers\RadioController;
-
+use App\Models\Ticket;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\ConsultationController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\OrderController;
@@ -143,6 +144,11 @@ Route::middleware('auth')->get('/consultations/{id}', [ConsultationController::c
 Route::post('/events/{event}/purchase', [EventController::class, 'purchase'])->name('events.purchase');
 Route::get('/payment/success', [PaymentController::class, 'success'])->name('payment.success');
 Route::get('/payment/cancel', [PaymentController::class, 'cancel'])->name('payment.cancel');
+
+Route::get('/tickets/{ticket}/pdf', function (Ticket $ticket) {
+    $pdf = Pdf::loadView('tickets.pdf', compact('ticket'));
+    return $pdf->download("ticket_{$ticket->ticket_code}.pdf");
+})->name('tickets.pdf');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/events', [EventController::class, 'index'])->name('events.index');

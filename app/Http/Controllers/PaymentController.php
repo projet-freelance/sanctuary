@@ -2,96 +2,141 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Paydunya\Checkout\CheckoutInvoice;
 use App\Models\Event;
 use App\Models\Ticket;
+use App\Services\PaydunyaService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use App\Services\PaydunyaService; // Assurez-vous d'importer votre service PayDunya
+use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class PaymentController extends Controller
 {
-    protected $paydunyaService;
+    protected PaydunyaService $paydunyaService;
 
     public function __construct(PaydunyaService $paydunyaService)
     {
         $this->paydunyaService = $paydunyaService;
     }
 
+    /**
+     * Initialise le paiement avec PayDunya.
+     */
     public function pay(Request $request, Event $event)
     {
-        // Valider la quantité de tickets
-        $request->validate([
-            'quantity' => 'required|integer|min:1|max:10',
-        ]);
-    
-        // Vérifier si le nombre de tickets demandés est disponible
-        $quantity = $request->quantity;
-    
-        if ($event->available_seats < $quantity) {
-            return back()->withErrors(['msg' => 'Not enough seats available.']);
-        }
-    
-        $totalAmount = $event->ticket_price * $quantity;
-    
-        // Créer la facture via le service PayDunya
-        $invoiceUrl = $this->paydunyaService->createInvoice(
-            $totalAmount,
-            "Ticket for {$event->name}",
-            route('payment.cancel'),
-            route('payment.success', [
-                'event_id' => $event->id,
-                'quantity' => $quantity
-            ])
-        );
-    
-        if ($invoiceUrl) {
-            return redirect($invoiceUrl); // Redirige l'utilisateur vers l'URL de paiement
-        } else {
-            return back()->withErrors(['msg' => 'Payment initiation failed']);
-        }
-    }
-
-    public function success(Request $request)
-    {
-        $event = Event::find($request->event_id);
-        $quantity = $request->quantity;
-    
-        if (!$event || $event->available_seats < $quantity) {
-            return redirect()->route('payment.cancel')->withErrors(['msg' => 'Not enough seats available or invalid event']);
-        }
-    
-        // Confirmer le paiement avec le token PayDunya
-        $token = $request->get('token'); // Assurez-vous que ce token est retourné par PayDunya
-        if (!$this->paydunyaService->confirmPayment($token)) {
-            return redirect()->route('payment.cancel')->withErrors(['msg' => 'Payment confirmation failed']);
-        }
-    
-        DB::beginTransaction();
         try {
-            // Mettre à jour le nombre de places disponibles après l'achat
-            $event->available_seats -= $quantity;
-            $event->save();
-    
-            // Enregistrer le ticket
-            $ticket = new Ticket();
-            $ticket->event_id = $event->id;
-            $ticket->user_id = auth()->user()->id;
-            $ticket->ticket_code = uniqid();
-            $ticket->quantity = $quantity;
-            $ticket->save();
-    
-            DB::commit();
-    
-            return redirect()->route('tickets.show', $ticket)->with('success', 'Payment successful!');
+            if (!Auth::check()) {
+                return redirect()->route('login')->withErrors(['msg' => 'Vous devez être connecté pour acheter un ticket.']);
+            }
+
+            // Verrouiller l'événement pour éviter les conflits
+            $event = Event::lockForUpdate()->findOrFail($event->id);
+            
+            if ($event->available_seats < 1) {
+                throw ValidationException::withMessages([
+                    'msg' => "Désolé, il n'y a plus de places disponibles."
+                ]);
+            }
+
+            $totalAmount = $event->ticket_price;
+
+            // Stocker les données de la transaction en session
+            $request->session()->put('payment_data', [
+                'event_id' => $event->id,
+                'amount' => $totalAmount,
+                'initiated_at' => now(),
+            ]);
+
+            // Génération des URL de succès et d'annulation
+            $cancelUrl = route('payment.cancel');
+            $successUrl = route('payment.success');
+
+            // Création de la facture PayDunya
+            $invoiceUrl = $this->paydunyaService->createInvoice(
+                amount: $totalAmount,
+                description: "Billet pour {$event->name}",
+                cancelUrl: $cancelUrl,
+                returnUrl: $successUrl // Correction : ici, c'est bien `returnUrl`
+            );
+
+            if (!$invoiceUrl) {
+                throw new \Exception('Échec de l\'initialisation du paiement');
+            }
+
+            return redirect()->away($invoiceUrl);
+        } catch (ValidationException $e) {
+            return back()->withErrors($e->errors())->withInput();
         } catch (\Exception $e) {
-            DB::rollBack();
-            return redirect()->route('payment.cancel')->withErrors(['msg' => 'Failed to save ticket']);
+            report($e);
+            return back()->withErrors([
+                'msg' => 'Une erreur est survenue lors de l\'initialisation du paiement. Veuillez réessayer.'
+            ])->withInput();
         }
     }
 
-    public function cancel()
+    /**
+     * Vérifie et valide le paiement après succès.
+     */
+    public function success(Request $request)
+{
+    if (!$request->session()->has('payment_data')) {
+        return redirect()->route('events.index')->withErrors(['msg' => 'Session de paiement expirée']);
+    }
+
+    $paymentData = $request->session()->get('payment_data');
+
+    DB::beginTransaction();
+    try {
+        $event = Event::lockForUpdate()->findOrFail($paymentData['event_id']);
+
+        if ($event->available_seats < 1) {
+            throw new \Exception('Places insuffisantes');
+        }
+
+        if (!$this->paydunyaService->confirmPayment($request->get('token'))) {
+            throw new \Exception('Échec de la confirmation du paiement');
+        }
+
+        if ($event->ticket_price !== $paymentData['amount']) {
+            throw new \Exception('Montant du paiement incorrect');
+        }
+
+        $event->available_seats -= 1;
+        $event->save();
+
+        $ticketCode = strtoupper(Str::random(10));
+
+        $ticket = Ticket::create([
+            'event_id' => $event->id,
+            'user_id' => auth()->id(),
+            'ticket_code' => $ticketCode,
+        ]);
+
+        // Générer le QR Code
+        $ticket->generateQrCode();
+
+        DB::commit();
+        $request->session()->forget('payment_data');
+
+        return redirect()->route('tickets.show', $ticket)
+            ->with('success', 'Paiement réussi ! Votre billet a été réservé.');
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return redirect()->route('payment.cancel')->withErrors(['msg' => 'Transaction échouée : ' . $e->getMessage()]);
+    }
+}
+ 
+
+    /**
+     * Annulation du paiement.
+     */
+    public function cancel(Request $request)
     {
-        return redirect()->route('events.index')->withErrors(['msg' => 'Payment cancelled']);
+        $request->session()->forget('payment_data');
+
+        return redirect()->route('events.index')
+            ->withErrors(['msg' => 'Le paiement a été annulé']);
     }
 }

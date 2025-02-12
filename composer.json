@@ -9,7 +9,7 @@
         "php": "^8.2",
         "aloha/twilio": "^3.0",
         "astrotomic/laravel-translatable": "*",
-        "barryvdh/laravel-dompdf": "*",
+        "barryvdh/laravel-dompdf": "^3.1",
         "filament/filament": "^3.2",
         "get-stream/stream-chat": "^3.7",
         "laravel-notification-channels/twilio": "^4.0",
@@ -19,7 +19,7 @@
         "livewire/livewire": "^3.5",
         "nunomaduro/termwind": "^2.0",
         "paydunya/paydunya": "^1.0",
-        "simplesoftwareio/simple-qrcode": "*",
+        "simplesoftwareio/simple-qrcode": "^4.2",
         "spatie/laravel-medialibrary": "^11.12",
         "stichoza/google-translate-php": "^5.2",
         "twilio/sdk": "^8.3"

@@ -4,49 +4,30 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class Ticket extends Model
 {
     use HasFactory;
 
-    /**
-     * Les attributs qui sont mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'event_id',
-        'user_id',
-        'ticket_code',
-    ];
+    protected $fillable = ['event_id', 'user_id', 'ticket_code'];
 
-    /**
-     * Relation avec l'événement.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function event()
-    {
-        return $this->belongsTo(Event::class);
-    }
-
-    /**
-     * Relation avec l'utilisateur.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function user()
-    {
+    public function user() {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * Génère un code de ticket unique.
-     *
-     * @return string
-     */
-    public static function generateTicketCode()
+    public function event() {
+        return $this->belongsTo(Event::class);
+    }
+
+    public function getQrCodePathAttribute()
     {
-        return uniqid('TICKET-', true);
+        return "qrcodes/ticket_{$this->ticket_code}.png";
+    }
+
+    public function generateQrCode()
+    {
+        $path = public_path($this->qr_code_path);
+        QrCode::size(300)->format('png')->generate(route('tickets.show', $this->ticket_code), $path);
     }
 }
