@@ -92,13 +92,17 @@ Route::get('/testimonies', [TestimonyController::class, 'index'])->name('testimo
 Route::get('/testimonies/create', [TestimonyController::class, 'create'])->name('testimonies.create');
 
 
-// Routes pour le profil utilisateur
-Route::middleware('auth')->group(function () {
-    Route::get('/profile/me', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile/me', [ProfileController::class, 'update'])->name('profile.update');
-    
-    Route::delete('/profile/me', [ProfileController::class, 'destroy'])->name('profile.destroy');
+Route::middleware(['auth'])->group(function () {
+    // Afficher le profil de l'utilisateur
     Route::get('/profile/{id}', [ProfileController::class, 'show'])->name('profile.show');
+    
+    
+    // Modifier le profil de l'utilisateur
+    Route::get('/profile/{id}/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile/{id}', [ProfileController::class, 'update'])->name('profile.update');
+    
+    // Supprimer le profil de l'utilisateur
+    Route::delete('/profile/{id}', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 Route::resource('prayers', PrayerController::class);

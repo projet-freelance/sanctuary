@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use Carbon\Carbon;
 
 class RegisteredUserController extends Controller
 {
@@ -37,20 +38,23 @@ class RegisteredUserController extends Controller
             'phone' => 'nullable|string|max:32',
             'country' => 'nullable|string|max:100',
             'city' => 'nullable|string|max:200',
-            'birthdate' => 'nullable|date',
+            'birthdate' => 'nullable|date|before:today', // Empêcher une date future
         ]);
-
+    
+        // Convertir birthdate au format 'YYYY-MM-DD'
+        $birthdate = $validatedData['birthdate'] ? Carbon::parse($validatedData['birthdate'])->format('Y-m-d') : null;
+    
         // Créer un nouvel utilisateur
         $user = User::create([
             'name' => $validatedData['name'],
             'email' => $validatedData['email'],
             'password' => Hash::make($validatedData['password']),
-            'phone' => $validatedData['phone'] ?? 'Non spécifié', // Valeur par défaut
-            'country' => $validatedData['country'] ?? 'Non spécifié', // Valeur par défaut
-            'city' => $validatedData['city'] ?? 'Inconnue', // Valeur par défaut
-            'birthdate' => $validatedData['birthdate'] ?? null, // Valeur par défaut
-            'status' => 1, // Par défaut 1 (actif)
-            'role' => 'editor', // Par défaut 'editor'
+            'phone' => $validatedData['phone'] ?? 'Non spécifié',
+            'country' => $validatedData['country'] ?? 'Non spécifié',
+            'city' => $validatedData['city'] ?? 'Inconnue',
+            'birthdate' => $birthdate, // Date bien formatée
+            'status' => 1,
+            'role' => 'editor',
         ]);
 
         event(new Registered($user));

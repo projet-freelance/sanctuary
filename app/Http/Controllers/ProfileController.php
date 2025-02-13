@@ -31,21 +31,23 @@ class ProfileController extends Controller
      * Update the user's profile information.
      */
     public function update(Request $request, $id)
+
+
     {
-        $user = User::findOrFail($id);
 
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email,'.$id,
             'phone' => 'nullable|string|max:20',
             'country' => 'nullable|string|max:100',
             'city' => 'nullable|string|max:100',
             'birthdate' => 'nullable|date',
         ]);
 
-        $user->update($request->all());
+        $user = User::findOrFail($id);
+        $user->update($request->only(['name','phone', 'birthdate', 'country', 'city']));
 
-        return redirect()->route('profile.show', $id)->with('success', 'Profil mis à jour avec succès.');
+        return view('profile.show', compact('user'));
+        
     }
 
     /**
