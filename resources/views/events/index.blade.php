@@ -31,7 +31,7 @@
                     <!-- Prix du ticket -->
                     <div class="mb-4">
                         <span class="text-lg font-bold text-green-600">
-                            {{ number_format($event->ticket_price, 2) }} €
+                            {{ number_format($event->ticket_price) }} FCFA
                         </span>
                     </div>
                     
@@ -41,14 +41,6 @@
                            class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
                             Voir détails
                         </a>
-                        
-                        @if($event->available_tickets > 0)
-                            <span class="text-green-500">
-                                {{ $event->available_tickets }} places restantes
-                            </span>
-                        @else
-                            <span class="text-red-500">Complet</span>
-                        @endif
                     </div>
                 </div>
             </div>

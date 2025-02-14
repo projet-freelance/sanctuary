@@ -34,7 +34,7 @@
                 <!-- Prix -->
                 <div class="mb-6">
                     <div class="text-2xl font-bold text-indigo-600">
-                        {{ number_format($product->price, 2, ',', ' ') }} €
+                        {{ number_format($product->price) }} FCFA
                     </div>
                 </div>
 
@@ -54,16 +54,16 @@
                         <div class="bg-gray-50 rounded-lg p-4 space-y-2">
                             <div class="flex justify-between text-sm">
                                 <span>Premier paiement (50%)</span>
-                                <span class="font-medium">{{ number_format($product->price * 0.5, 2, ',', ' ') }} €</span>
+                                <span class="font-medium">{{ number_format($product->price * 0.5) }} FCFA</span>
                             </div>
                             <div class="flex justify-between text-sm">
                                 <span>Second paiement (50%)</span>
-                                <span class="font-medium">{{ number_format($product->price * 0.5, 2, ',', ' ') }} €</span>
+                                <span class="font-medium">{{ number_format($product->price * 0.5) }} FCFA</span>
                             </div>
                             <div class="pt-2 border-t">
                                 <div class="flex justify-between text-base font-semibold">
                                     <span>Total</span>
-                                    <span>{{ number_format($product->price, 2, ',', ' ') }} €</span>
+                                    <span>{{ number_format($product->price) }} FCFA</span>
                                 </div>
                             </div>
                         </div>

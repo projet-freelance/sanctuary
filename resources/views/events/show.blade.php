@@ -57,7 +57,7 @@
                                 </div>
                                 <div>
                                     <p class="text-xs text-gray-500">Prix du billet</p>
-                                    <p class="text-sm text-gray-900">{{ number_format($event->ticket_price, 0, ',', ' ') }} FCFA</p>
+                                    <p class="text-sm text-gray-900">{{ number_format($event->ticket_price) }} FCFA</p>
                                 </div>
                             </div>
                         </div>
@@ -85,7 +85,7 @@
                                     <div class="flex justify-between items-center text-sm">
                                         <span class="text-gray-600">Total :</span>
                                         <span class="font-semibold text-gray-900">
-                                            {{ number_format($event->ticket_price, 0, ',', ' ') }} FCFA
+                                            {{ number_format($event->ticket_price) }} FCFA
                                         </span>
                                     </div>
                                 </div>

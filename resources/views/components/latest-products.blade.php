@@ -43,7 +43,7 @@
                                 
                                 <div class="flex items-center justify-between">
                                     <span class="text-lg font-bold text-indigo-600">
-                                        {{ number_format($product->price, 2, ',', ' ') }} €
+                                        {{ number_format($product->price,  ) }} FCFA
                                     </span>
                                     
                                     <a href="{{ route('products.show', ['id' => $product->id]) }}" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-600 px-4 py-2 rounded-lg font-medium text-sm transition-colors duration-200">
