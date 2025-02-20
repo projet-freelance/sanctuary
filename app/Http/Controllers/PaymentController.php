@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
 class PaymentController extends Controller
@@ -79,54 +80,75 @@ class PaymentController extends Controller
      * Vérifie et valide le paiement après succès.
      */
     public function success(Request $request)
-{
-    if (!$request->session()->has('payment_data')) {
-        return redirect()->route('events.index')->withErrors(['msg' => 'Session de paiement expirée']);
+    {
+        Log::info('Début de la méthode success');
+    
+        if (!$request->session()->has('payment_data')) {
+            Log::error('Session de paiement expirée ou manquante');
+            return redirect()->route('events.index')->withErrors(['msg' => 'Session de paiement expirée']);
+        }
+    
+        $paymentData = $request->session()->get('payment_data');
+        Log::info('Données de la session de paiement', $paymentData);
+    
+        DB::beginTransaction();
+        try {
+            Log::info('Recherche de l\'événement', ['event_id' => $paymentData['event_id']]);
+            $event = Event::lockForUpdate()->findOrFail($paymentData['event_id']);
+    
+            if ($event->available_seats < 1) {
+                Log::error('Places insuffisantes pour l\'événement', ['event_id' => $event->id]);
+                throw new \Exception('Places insuffisantes');
+            }
+    
+            Log::info('Confirmation du paiement avec PayDunya', ['token' => $request->get('token')]);
+            if (!$this->paydunyaService->confirmPayment($request->get('token'))) {
+                Log::error('Échec de la confirmation du paiement');
+                throw new \Exception('Échec de la confirmation du paiement');
+            }
+    
+            if ($event->ticket_price !== $paymentData['amount']) {
+                Log::error('Montant du paiement incorrect', [
+                    'montant_événement' => $event->ticket_price,
+                    'montant_paiement' => $paymentData['amount'],
+                ]);
+                throw new \Exception('Montant du paiement incorrect');
+            }
+    
+            $event->available_seats -= 1;
+            $event->save();
+            Log::info('Places disponibles mises à jour', ['places_restantes' => $event->available_seats]);
+    
+            $ticketCode = strtoupper(Str::random(10));
+            Log::info('Création du ticket', ['ticket_code' => $ticketCode]);
+    
+            $ticket = Ticket::create([
+                'event_id' => $event->id,
+                'user_id' => auth()->id(),
+                'ticket_code' => $ticketCode,
+            ]);
+            Log::info('Ticket créé avec succès', ['ticket_id' => $ticket->id]);
+    
+            // Générer le QR Code (si applicable)
+            $ticket->generateQrCode();
+            Log::info('QR Code généré pour le ticket', ['ticket_id' => $ticket->id]);
+    
+            DB::commit();
+            $request->session()->forget('payment_data');
+            Log::info('Redirection vers la page du ticket', ['ticket_id' => $ticket->id]);
+    
+            return redirect()->route('tickets.show', $ticket)
+                ->with('success', 'Paiement réussi ! Votre billet a été réservé.');
+    
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Erreur lors de la confirmation du paiement', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+            return redirect()->route('payment.cancel')->withErrors(['msg' => 'Transaction échouée : ' . $e->getMessage()]);
+        }
     }
-
-    $paymentData = $request->session()->get('payment_data');
-
-    DB::beginTransaction();
-    try {
-        $event = Event::lockForUpdate()->findOrFail($paymentData['event_id']);
-
-        if ($event->available_seats < 1) {
-            throw new \Exception('Places insuffisantes');
-        }
-
-        if (!$this->paydunyaService->confirmPayment($request->get('token'))) {
-            throw new \Exception('Échec de la confirmation du paiement');
-        }
-
-        if ($event->ticket_price !== $paymentData['amount']) {
-            throw new \Exception('Montant du paiement incorrect');
-        }
-
-        $event->available_seats -= 1;
-        $event->save();
-
-        $ticketCode = strtoupper(Str::random(10));
-
-        $ticket = Ticket::create([
-            'event_id' => $event->id,
-            'user_id' => auth()->id(),
-            'ticket_code' => $ticketCode,
-        ]);
-
-        // Générer le QR Code
-        $ticket->generateQrCode();
-
-        DB::commit();
-        $request->session()->forget('payment_data');
-
-        return redirect()->route('tickets.show', $ticket)
-            ->with('success', 'Paiement réussi ! Votre billet a été réservé.');
-
-    } catch (\Exception $e) {
-        DB::rollBack();
-        return redirect()->route('payment.cancel')->withErrors(['msg' => 'Transaction échouée : ' . $e->getMessage()]);
-    }
-}
  
 
     /**

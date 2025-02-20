@@ -38,6 +38,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/about', function () {
+    return view('about');
+});
+
 Route::get('/site-stats', [SiteStatsController::class, 'index'])->name('site-stats');
 
 Route::get('/bible_videos', [BibleVideoController::class, 'index'])->name('biblevideos.index');
@@ -146,28 +150,22 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware('auth')->get('/consultations/{id}', [ConsultationController::class, 'show'])->name('consultations.show');
 
+// Routes publiques
+Route::get('/events', [EventController::class, 'index'])->name('events.index');
+Route::get('/events/{id}', [EventController::class, 'show'])->name('events.show');
 
-Route::post('/events/{event}/purchase', [EventController::class, 'purchase'])->name('events.purchase');
-Route::get('/payment/success', [PaymentController::class, 'success'])->name('payment.success');
-Route::get('/payment/cancel', [PaymentController::class, 'cancel'])->name('payment.cancel');
-
-Route::get('/tickets/{ticket}/pdf', function (Ticket $ticket) {
-    $pdf = Pdf::loadView('tickets.pdf', compact('ticket'));
-    return $pdf->download("ticket_{$ticket->ticket_code}.pdf");
-})->name('tickets.pdf');
-
+// Routes protégées
 Route::middleware(['auth'])->group(function () {
-    Route::get('/events', [EventController::class, 'index'])->name('events.index');
-    Route::get('/events/{id}', [EventController::class, 'show'])->name('events.show');
-    Route::post('/events/{event}/purchase', [EventController::class, 'purchase'])
-    ->name('events.purchase');
-
+    // Paiement et tickets
+    Route::post('/events/{event}/purchase', [EventController::class, 'purchase'])->name('events.purchase');
     Route::get('/events/{event}/pay', [PaymentController::class, 'pay'])->name('payment.pay');
     Route::get('/payment/success', [PaymentController::class, 'success'])->name('payment.success');
     Route::get('/payment/cancel', [PaymentController::class, 'cancel'])->name('payment.cancel');
 
+    // Tickets
     Route::get('/tickets/{ticket}', [TicketController::class, 'show'])->name('tickets.show');
     Route::get('/tickets/{ticket}/download', [TicketController::class, 'download'])->name('tickets.download');
+    Route::get('/tickets/{ticket}/pdf', [TicketController::class, 'generatePdf'])->name('tickets.pdf');
 });
 
 Route::get('/products', function () {
