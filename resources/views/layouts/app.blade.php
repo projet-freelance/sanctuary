@@ -4,7 +4,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'E-SANCTUARY') }}</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
@@ -27,10 +27,10 @@
                 <div class="flex items-center justify-between h-16">
                     <!-- Logo -->
                     <div class="flex items-center">
-                        <a href="{{ url('/') }}" class="flex-shrink-0">
-                            <x-application-logo class="h-8 w-auto text-white"/>
-                        </a>
-                        
+                    <a href="{{ url('/') }}" class="flex-shrink-0">
+                     <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-16 w-auto">
+                    </a>
+
                         <!-- Navigation Desktop -->
                         <div class="hidden sm:ml-6 sm:block">
                             <div class="flex space-x-4">
@@ -115,7 +115,7 @@
                                         <i class="fas fa-shopping-cart mr-2"></i>Produits
                                     </a>
                                     <a href="{{ route('events.index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md flex items-center">
-                                        <i class="fas fa-shopping-cart mr-2"></i>Event
+                                        <i class="fas fa-calendar-alt mr-2"></i>Event
                                     </a>
                                 @endauth
                             </div>
@@ -272,9 +272,9 @@
                         <a href="{{ route('products.index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md">
                             <i class="fas fa-shopping-cart mr-2"></i>Produits
                         </a>
-                        <a href="{{ route('events.index') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md flex items-center">
-                                        <i class="fas fa-shopping-cart mr-2"></i>Event
-                                    </a>
+                        <a href="{{ route('events.index') }}" class="text-white hover:bg-blue-700 hover:text-white block px-3 py-2 rounded-md">
+                            <i class="fas fa-calendar-alt mr-2"></i>Event
+                        </a>
                     @endauth
                 </div>
             </div>

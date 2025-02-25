@@ -222,7 +222,7 @@ class BibleService
     }
 
 
-    public function getDailyVerses($count = 5)
+    public function getDailyVerses($count = 3)
 {
     $books = array_keys($this->bookMappings);
     $verses = [];

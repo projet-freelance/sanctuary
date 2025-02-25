@@ -167,8 +167,8 @@
                     ['icon' => 'fas fa-heart', 'title' => 'Témoignages', 'description' => 'Partagez votre histoire', 'route' => 'testimonies.index'],
                     ['icon' => 'fas fa-pray', 'title' => 'Intention de prière', 'description' => 'SMS ou note vocale', 'route' => 'prayers.create'],
                     ['icon' => 'fas fa-brain', 'title' => 'Exercice spirituel', 'description' => 'Vertus et dons de l\'Esprit', 'route' => 'dashboard'],
-                    ['icon' => 'fas fa-angel', 'title' => 'Saint intercesseur', 'description' => 'Découvrez votre saint protecteur', 'route' => 'dashboard'],
-                    ['icon' => 'fas fa-store', 'title' => 'Store', 'description' => 'Objets de piété et plus', 'route' => 'products.index'],
+                    ['icon' => 'fas fa-angel', 'title' => 'Consultation spirituelle', 'description' => 'Découvrez votre saint protecteur', 'route' => 'dashboard'],
+                    ['icon' => 'fas fa-store', 'title' => 'Store', 'description' => 'Objets de piété et fleurs', 'route' => 'products.index'],
                 ];
             @endphp
 
