@@ -28,7 +28,7 @@
                     <!-- Logo -->
                     <div class="flex items-center">
                     <a href="{{ url('/') }}" class="flex-shrink-0">
-                     <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-16 w-auto">
+                     <img src="{{ asset('images/LogoeSanctuary.png') }}" alt="Logo" class="h-16 w-auto">
                     </a>
 
                         <!-- Navigation Desktop -->

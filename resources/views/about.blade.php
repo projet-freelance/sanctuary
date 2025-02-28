@@ -177,6 +177,70 @@
             opacity: 0.3;
         }
         
+        /* Styles pour la section contact */
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .contact-icon {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+        
+        /* Styles pour la section équipe */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+        
+        .team-member {
+            background-color: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+        
+        .team-member:hover {
+            transform: translateY(-5px);
+        }
+        
+        .team-member-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 1rem;
+            background-color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+        
+        .team-member h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .team-member p {
+            font-size: 0.9rem;
+            color: var(--text-color);
+        }
+        
         /* Responsive Design */
         @media (max-width: 768px) {
             .hero h1 {
@@ -188,6 +252,10 @@
             }
             
             .services {
+                grid-template-columns: 1fr;
+            }
+            
+            .team-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -266,6 +334,54 @@
                 <p>Nous aspirons à bâtir une communauté virtuelle où les croyants peuvent grandir ensemble dans leur foi, partager leurs expériences et s'encourager mutuellement sur le chemin de la spiritualité.</p>
             </section>
             
+            <!-- Nouvelle section Contact -->
+            <section class="section">
+                <h2>Contactez-Nous</h2>
+                <p>Nous sommes à votre écoute pour répondre à vos questions, recevoir vos témoignages ou vous accompagner dans votre cheminement spirituel.</p>
+                
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <span class="contact-icon">✉️</span>
+                        <p>Email: <a href="mailto:info.esanctuary25@gmail.com">info.esanctuary25@gmail.com</a></p>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <span class="contact-icon">📞</span>
+                        <p>Téléphone: 07 19 12 21 12</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Nouvelle section Équipe -->
+            <section class="section">
+                <h2>Notre Équipe de Développeurs</h2>
+                <p>Découvrez les talents dévoués qui ont créé et maintiennent E-SANCTUARY, travaillant avec passion pour vous offrir la meilleure expérience spirituelle en ligne.</p>
+                
+                <div class="team-grid">
+                    <div class="team-member">
+                    <h3 style="color: var(--primary-color);">TRAORE LACINA</h3>
+                    <p style="color: var(--text-light); font-weight: 500;">Lead Developer</p>
+                    <div style="margin: 1rem 0;">
+                        <p>• Full Stack Development</p>
+                        <p>• Laravel Expert</p>
+                        <p>• Base de données</p>
+                        <p>• API & Sécurité</p>
+                    </div>
+                    <a href="https://www.linkedin.com/in/lacina-traore-8a850b29b/" class="social-link" target="_blank">
+                        <i class="fab fa-linkedin-in" style="margin-right: 0.5rem;"></i> LinkedIn
+                    </a>
+                    </div>
+                    
+                    
+                    <div class="team-member">
+                        <div class="team-member-img">🔧</div>
+                        <h3>Thomas Bernard</h3>
+                        <p>DevOps</p>
+                        <p>Veille au bon fonctionnement technique de la plateforme.</p>
+                    </div>
+                </div>
+            </section>
+            
             <section class="cta">
                 <h2>Rejoignez Notre Communauté</h2>
                 <p>Embarquez avec nous dans cette aventure spirituelle et laissez-nous marcher à vos côtés sur le chemin sacré de la foi. Ensemble, grandissons, apprenons et élevons-nous, toujours guidés par la lumière de Dieu.</p>
@@ -278,6 +394,7 @@
         <div class="container">
             <p>Avec dévotion et engagement,</p>
             <p>L'équipe de E-Sanctuary</p>
+            <p>&copy; 2025 E-SANCTUARY - Tous droits réservés</p>
         </div>
     </footer>
 </body>
