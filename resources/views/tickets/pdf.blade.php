@@ -2,121 +2,100 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ticket</title>
+    <title>Ticket d'Événement Paroissial</title>
     <style>
-        @page {
-            margin: 0;
-        }
-        
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Open+Sans:wght@300;400;600&display=swap');
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Open Sans', sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
             margin: 0;
-            padding: 0;
-            background-color: #f8f9fa;
+            padding: 20px;
+            box-sizing: border-box;
         }
 
         .ticket-container {
-            width: 100%;
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: 2px solid #8B4513; /* Couleur brun église */
         }
 
         .header {
-            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            background-color: #8B4513;
             color: white;
-            padding: 2rem;
             text-align: center;
+            padding: 15px;
         }
 
         .header h2 {
+            font-family: 'Playfair Display', serif;
             margin: 0;
-            font-size: 24px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            font-size: 1.5em;
         }
 
         .ticket-content {
-            padding: 2rem;
+            padding: 20px;
         }
 
         .ticket-info {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
 
         .info-item {
-            padding: 1rem;
-            background-color: #f8f9fa;
-            border-radius: 8px;
-            border-left: 4px solid #4f46e5;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 10px;
         }
 
         .info-item strong {
             display: block;
-            color: #4f46e5;
-            margin-bottom: 0.5rem;
-            font-size: 14px;
-            text-transform: uppercase;
+            color: #8B4513;
+            font-size: 0.9em;
+            margin-bottom: 5px;
         }
 
         .info-item p {
             margin: 0;
-            color: #333;
-            font-size: 16px;
-        }
-
-        .qr-code {
-            text-align: center;
-            padding: 2rem;
-            background-color: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-        }
-
-        .qr-code img {
-            max-width: 200px;
-            height: auto;
+            font-weight: 600;
         }
 
         .footer {
+            background-color: #f0f0f0;
+            padding: 15px;
             text-align: center;
-            padding: 1.5rem;
-            background-color: #f8f9fa;
+            font-size: 0.8em;
             color: #666;
-            font-size: 12px;
-            border-top: 1px solid #eee;
         }
 
-        @media print {
-            body {
-                background-color: white;
-            }
-            
-            .ticket-container {
-                box-shadow: none;
-            }
+        .qr-code {
+            width: 120px;
+            height: 120px;
+            background-color: #e0e0e0;
+            margin: 20px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+        }
 
-            .info-item {
-                break-inside: avoid;
-            }
-
-            .qr-code {
-                break-inside: avoid;
-                box-shadow: none;
-            }
+        .qr-code span {
+            color: #8B4513;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
     <div class="ticket-container">
         <div class="header">
-            <h2>Ticket pour {{ $ticket->event->name }}</h2>
+            <h2>Ticket pour l'Événement Paroissial</h2>
         </div>
 
         <div class="ticket-content">
@@ -143,7 +122,7 @@
             </div>
 
             <div class="qr-code">
-                <img src="{{ public_path($ticket->qr_code_path) }}" alt="QR Code">
+                <span>QR Code</span>
             </div>
         </div>
 

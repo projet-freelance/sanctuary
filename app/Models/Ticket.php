@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class Ticket extends Model
 {
@@ -18,16 +17,5 @@ class Ticket extends Model
 
     public function event() {
         return $this->belongsTo(Event::class);
-    }
-
-    public function getQrCodePathAttribute()
-    {
-        return "qrcodes/ticket_{$this->ticket_code}.png";
-    }
-
-    public function generateQrCode()
-    {
-        $path = public_path($this->qr_code_path);
-        QrCode::size(300)->format('png')->generate(route('tickets.show', $this->ticket_code), $path);
     }
 }

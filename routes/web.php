@@ -166,6 +166,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/tickets/{ticket}', [TicketController::class, 'show'])->name('tickets.show');
     Route::get('/tickets/{ticket}/download', [TicketController::class, 'download'])->name('tickets.download');
     Route::get('/tickets/{ticket}/pdf', [TicketController::class, 'generatePdf'])->name('tickets.pdf');
+    Route::get('/ticket/{ticket}/generatePdf', [TicketController::class, 'generatePdf']);
 });
 
 Route::get('/products', function () {

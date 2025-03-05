@@ -42,12 +42,7 @@
                 </div>
             </div>
 
-            <!-- QR Code -->
-            <div class="mt-8 flex justify-center">
-                <div class="p-4 bg-white border-2 border-gray-200 rounded-lg">
-                    <img src="{{ asset($ticket->qr_code_path) }}" alt="QR Code" class="w-48 h-48 object-contain">
-                </div>
-            </div>
+         
 
             <!-- Bouton de téléchargement -->
             <div class="mt-8 flex justify-center">

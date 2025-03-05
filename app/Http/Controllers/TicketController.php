@@ -13,9 +13,12 @@ class TicketController extends Controller
         return view('tickets.show', compact('ticket'));
     }
 
-    public function download(Ticket $ticket)
+    public function generatePdf(Ticket $ticket)
     {
+        // Utiliser DomPDF pour générer le PDF à partir de la vue 'tickets.pdf'
         $pdf = Pdf::loadView('tickets.pdf', compact('ticket'));
+
+        // Télécharger le PDF
         return $pdf->download("ticket-{$ticket->ticket_code}.pdf");
     }
 }

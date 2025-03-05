@@ -129,10 +129,7 @@ class PaymentController extends Controller
             ]);
             Log::info('Ticket créé avec succès', ['ticket_id' => $ticket->id]);
     
-            // Générer le QR Code (si applicable)
-            $ticket->generateQrCode();
-            Log::info('QR Code généré pour le ticket', ['ticket_id' => $ticket->id]);
-    
+           
             DB::commit();
             $request->session()->forget('payment_data');
             Log::info('Redirection vers la page du ticket', ['ticket_id' => $ticket->id]);

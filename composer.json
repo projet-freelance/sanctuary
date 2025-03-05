@@ -12,6 +12,7 @@
         "barryvdh/laravel-dompdf": "^3.1",
         "filament/filament": "^3.2",
         "get-stream/stream-chat": "^3.7",
+        "intervention/image": "^3.11",
         "laravel-notification-channels/twilio": "^4.0",
         "laravel/breeze": "*",
         "laravel/framework": "^11.31",

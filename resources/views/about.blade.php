@@ -371,7 +371,7 @@
                         <i class="fab fa-linkedin-in" style="margin-right: 0.5rem;"></i> LinkedIn
                     </a>
                     </div>
-                    
+                     
                     
                     <div class="team-member">
                         <div class="team-member-img">🔧</div>
