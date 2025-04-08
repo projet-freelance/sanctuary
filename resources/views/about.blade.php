@@ -385,7 +385,7 @@
             <section class="cta">
                 <h2>Rejoignez Notre Communauté</h2>
                 <p>Embarquez avec nous dans cette aventure spirituelle et laissez-nous marcher à vos côtés sur le chemin sacré de la foi. Ensemble, grandissons, apprenons et élevons-nous, toujours guidés par la lumière de Dieu.</p>
-                <a href="#" class="btn">Nous Rejoindre</a>
+                <a href="/login" class="btn">Nous Rejoindre</a>
             </section>
         </div>
     </div>

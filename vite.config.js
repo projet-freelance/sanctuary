@@ -8,11 +8,11 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/css/app.css',
-                'resources/js/app.jsx',  // Vérifiez que le fichier est bien app.jsx
+                'resources/js/app.jsx',  
             ],
             refresh: true,
         }),
-        react(),  // Plugin React pour gérer le JSX
+        react(),  
         vue(),
     ],
 });

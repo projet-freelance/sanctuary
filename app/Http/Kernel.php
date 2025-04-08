@@ -38,6 +38,7 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\IsAdmin::class,
             \App\Http\Middleware\TrackUserOnline::class,
+            \App\Http\Middleware\TrackPageVisits::class,
             
         ],
 

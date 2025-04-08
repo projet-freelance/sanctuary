@@ -13,6 +13,7 @@
     @filamentStyles
     @vite(['resources/css/app.css', 'resources/js/app.jsx'])
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+    
 
     @livewireStyles
 <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
