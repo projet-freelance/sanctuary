@@ -21,6 +21,8 @@ use Aimeos\Shop\Base\Support;
 use App\Http\Controllers\SiteStatsController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\OraisonSpirituelController;
+use App\Http\Controllers\PickAngeController;
 
 /*
 |----------------------------------------------------------------------
@@ -189,5 +191,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
 });
 
+
+// Route pour Oraison Spirituel
+Route::get('/oraison-spirituel', [OraisonSpirituelController::class, 'index'])->name('oraison-spirituel');
+    
+// Route pour Pick-Ange
+Route::get('/pick-ange', [PickAngeController::class, 'index'])->name('pick-ange');
 
 require __DIR__.'/auth.php';

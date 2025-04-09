@@ -81,6 +81,7 @@
                             </div>
                             <select id="country" name="country" required 
                                 class="pl-10 w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition-colors duration-200">
+                                <option value="">Sélectionnez un pays</option>
                             </select>
                         </div>
                     </div>
@@ -101,22 +102,22 @@
                 </div>
 
                <!-- Birthdate -->
-<div class="group">
-    <x-label for="birthdate" :value="__('Date de naissance')" class="text-gray-700 font-medium" />
-    
-    <div class="mt-1 relative rounded-md shadow-sm">
-        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-        </div>
-        
-        <x-input id="birthdate" type="date" name="birthdate"
-            value="{{ old('birthdate') ? \Carbon\Carbon::parse(old('birthdate'))->format('Y-m-d') : '' }}" 
-            class="pl-10 w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition-colors duration-200" 
-            required />
-    </div>
-</div>
+                <div class="group">
+                    <x-label for="birthdate" :value="__('Date de naissance')" class="text-gray-700 font-medium" />
+                    
+                    <div class="mt-1 relative rounded-md shadow-sm">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        
+                        <x-input id="birthdate" type="date" name="birthdate"
+                            value="{{ old('birthdate') ? \Carbon\Carbon::parse(old('birthdate'))->format('Y-m-d') : '' }}" 
+                            class="pl-10 w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition-colors duration-200" 
+                            required />
+                    </div>
+                </div>
 
 
                 <!-- Password Fields -->
@@ -149,14 +150,14 @@
                 </div>
 
                 <!-- Submit Button -->
-<div class="mt-8">
-    <button type="submit" class="w-full flex items-center justify-center py-3 px-6 border border-transparent rounded-lg shadow-lg text-base font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transform transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]">
-        <span>{{ __('S\'inscrire') }}</span>
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-        </svg>
-    </button>
-</div>
+                <div class="mt-8">
+                    <button type="submit" class="w-full flex items-center justify-center py-3 px-6 border border-transparent rounded-lg shadow-lg text-base font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transform transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]">
+                        <span>{{ __('S\'inscrire') }}</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                </div>
             </form>
         </div>
     </div>
@@ -207,33 +208,138 @@
 
         async function loadCountries() {
             try {
-                const [response, ipCountry] = await Promise.all([
-                    fetch('https://restcountries.com/v3.1/all'),
-                    verifyIPCountry()
-                ]);
-
-                const countries = await response.json();
-                const countrySelect = document.getElementById('country');
-                const sortedCountries = countries.sort((a, b) => a.name.common.localeCompare(b.name.common));
-
-                sortedCountries.forEach(country => {
-                    const option = document.createElement('option');
-                    option.value = country.name.common;
-                    option.textContent = country.name.common;
-                    countrySelect.appendChild(option);
-                });
-
-                if (ipCountry) {
-                    const matchingOption = Array.from(countrySelect.options).find(option => option.value === ipCountry);
-                    if (matchingOption) {
-                        countrySelect.value = ipCountry;
+                // Utiliser jsonp pour éviter les erreurs CORS ou HTTP2
+                const script = document.createElement('script');
+                script.src = 'https://restcountries.com/v3.1/all?fields=name';
+                script.async = true;
+                
+                // Créer une fonction globale pour recevoir les données
+                window.processCountriesData = function(data) {
+                    const countrySelect = document.getElementById('country');
+                    const countriesData = Array.isArray(data) ? data : [];
+                    
+                    // Trier les pays par nom en français si disponible, sinon par nom commun
+                    const sortedCountries = countriesData.sort((a, b) => {
+                        const nameA = (a.name.translations?.fra?.common || a.name.common || '').toLowerCase();
+                        const nameB = (b.name.translations?.fra?.common || b.name.common || '').toLowerCase();
+                        return nameA.localeCompare(nameB);
+                    });
+                    
+                    // Vider les options existantes sauf la première
+                    while (countrySelect.options.length > 1) {
+                        countrySelect.remove(1);
                     }
-                }
+                    
+                    // Ajouter les pays au select
+                    sortedCountries.forEach(country => {
+                        const option = document.createElement('option');
+                        // Utiliser le nom en français si disponible
+                        const countryName = country.name.translations?.fra?.common || country.name.common;
+                        option.value = countryName;
+                        option.textContent = countryName;
+                        countrySelect.appendChild(option);
+                    });
+                    
+                    // Sélectionner le pays détecté par IP s'il existe
+                    if (detectedCountry) {
+                        // Chercher une correspondance exacte ou partielle
+                        const options = Array.from(countrySelect.options);
+                        const exactMatch = options.find(opt => 
+                            opt.value.toLowerCase() === detectedCountry.toLowerCase()
+                        );
+                        
+                        if (exactMatch) {
+                            countrySelect.value = exactMatch.value;
+                        } else {
+                            // Chercher une correspondance partielle
+                            const partialMatch = options.find(opt => 
+                                opt.value.toLowerCase().includes(detectedCountry.toLowerCase()) || 
+                                detectedCountry.toLowerCase().includes(opt.value.toLowerCase())
+                            );
+                            
+                            if (partialMatch) {
+                                countrySelect.value = partialMatch.value;
+                            }
+                        }
+                    }
+                };
+                
+                // Méthode alternative utilisant fetch avec un traitement d'erreur robuste
+                fetch('https://restcountries.com/v3.1/all?fields=name')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Problème avec la réponse du réseau');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        window.processCountriesData(data);
+                    })
+                    .catch(error => {
+                        console.error('Erreur lors du chargement des pays:', error);
+                        // Utiliser une liste de pays prédéfinie en cas d'échec
+                        fallbackCountriesList();
+                    });
+                
+                // Démarrer le processus de détection de pays par IP en parallèle
+                verifyIPCountry();
+                
             } catch (error) {
-                alert('Erreur lors du chargement des pays. Veuillez réessayer plus tard.');
+                console.error('Erreur globale:', error);
+                fallbackCountriesList();
             }
+        }
+        
+        function fallbackCountriesList() {
+            // Liste de pays prédéfinie au cas où l'API échoue
+            const countriesList = [
+                "Afghanistan", "Afrique du Sud", "Albanie", "Algérie", "Allemagne", "Andorre", "Angola", 
+                "Antigua-et-Barbuda", "Arabie Saoudite", "Argentine", "Arménie", "Australie", "Autriche", 
+                "Azerbaïdjan", "Bahamas", "Bahreïn", "Bangladesh", "Barbade", "Belgique", "Belize", "Bénin", 
+                "Bhoutan", "Biélorussie", "Birmanie", "Bolivie", "Bosnie-Herzégovine", "Botswana", "Brésil", 
+                "Brunei", "Bulgarie", "Burkina Faso", "Burundi", "Cambodge", "Cameroun", "Canada", "Cap-Vert", 
+                "Chili", "Chine", "Chypre", "Colombie", "Comores", "Congo", "Corée du Nord", "Corée du Sud", 
+                "Costa Rica", "Côte d'Ivoire", "Croatie", "Cuba", "Danemark", "Djibouti", "Dominique", "Égypte", 
+                "Émirats arabes unis", "Équateur", "Érythrée", "Espagne", "Estonie", "Eswatini", "États-Unis", 
+                "Éthiopie", "Fidji", "Finlande", "France", "Gabon", "Gambie", "Géorgie", "Ghana", "Grèce", 
+                "Grenade", "Guatemala", "Guinée", "Guinée équatoriale", "Guinée-Bissau", "Guyana", "Haïti", 
+                "Honduras", "Hongrie", "Îles Marshall", "Îles Salomon", "Inde", "Indonésie", "Irak", "Iran", 
+                "Irlande", "Islande", "Israël", "Italie", "Jamaïque", "Japon", "Jordanie", "Kazakhstan", 
+                "Kenya", "Kirghizistan", "Kiribati", "Koweït", "Laos", "Lesotho", "Lettonie", "Liban", 
+                "Libéria", "Libye", "Liechtenstein", "Lituanie", "Luxembourg", "Macédoine du Nord", 
+                "Madagascar", "Malaisie", "Malawi", "Maldives", "Mali", "Malte", "Maroc", "Maurice", 
+                "Mauritanie", "Mexique", "Micronésie", "Moldavie", "Monaco", "Mongolie", "Monténégro", 
+                "Mozambique", "Namibie", "Nauru", "Népal", "Nicaragua", "Niger", "Nigeria", "Norvège", 
+                "Nouvelle-Zélande", "Oman", "Ouganda", "Ouzbékistan", "Pakistan", "Palaos", "Palestine", 
+                "Panama", "Papouasie-Nouvelle-Guinée", "Paraguay", "Pays-Bas", "Pérou", "Philippines", 
+                "Pologne", "Portugal", "Qatar", "République centrafricaine", "République démocratique du Congo", 
+                "République dominicaine", "République tchèque", "Roumanie", "Royaume-Uni", "Russie", "Rwanda", 
+                "Saint-Kitts-et-Nevis", "Saint-Marin", "Saint-Vincent-et-les-Grenadines", "Sainte-Lucie", 
+                "Salvador", "Samoa", "São Tomé-et-Principe", "Sénégal", "Serbie", "Seychelles", "Sierra Leone", 
+                "Singapour", "Slovaquie", "Slovénie", "Somalie", "Soudan", "Soudan du Sud", "Sri Lanka", 
+                "Suède", "Suisse", "Suriname", "Syrie", "Tadjikistan", "Tanzanie", "Tchad", "Thaïlande", 
+                "Timor oriental", "Togo", "Tonga", "Trinité-et-Tobago", "Tunisie", "Turkménistan", "Turquie", 
+                "Tuvalu", "Ukraine", "Uruguay", "Vanuatu", "Vatican", "Venezuela", "Vietnam", "Yémen", 
+                "Zambie", "Zimbabwe"
+            ];
+            
+            const countrySelect = document.getElementById('country');
+            
+            // Vider les options existantes sauf la première
+            while (countrySelect.options.length > 1) {
+                countrySelect.remove(1);
+            }
+            
+            // Ajouter les pays de secours
+            countriesList.sort((a, b) => a.localeCompare(b, 'fr'));
+            countriesList.forEach(country => {
+                const option = document.createElement('option');
+                option.value = country;
+                option.textContent = country;
+                countrySelect.appendChild(option);
+            });
         }
 
         document.addEventListener('DOMContentLoaded', loadCountries);
     </script>
-@endsection
+@endsection  
